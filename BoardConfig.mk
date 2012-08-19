@@ -40,7 +40,7 @@ TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 # Kernel
 TARGET_KERNEL_CONFIG := cyanogenmod_s7_defconfig
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.hardware=s7 no_console_suspend=1 msmsdcc_sdioirq=1
-BOARD_KERNEL_BASE := 0x00200000
+BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 4096
 
 # EGL
