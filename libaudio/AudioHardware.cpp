@@ -111,7 +111,7 @@ AudioHardware::AudioHardware() :
     FILE *fp;
     fp = fopen(path, "r");
     if (fp == NULL) {
-         LOGE("failed to open DualMicControl %s: %s (%d)",
+         ALOGE("failed to open DualMicControl %s: %s (%d)",
                path, strerror(errno), errno);
     }
     else {
@@ -142,8 +142,10 @@ status_t AudioHardware::initCheck()
     return mInit ? NO_ERROR : NO_INIT;
 }
 
+//AudioStreamOut* AudioHardware::openOutputStream(
+//        uint32_t devices, int *format, uint32_t *channels, uint32_t *sampleRate, status_t *status)
 AudioStreamOut* AudioHardware::openOutputStream(
-        uint32_t devices, int *format, uint32_t *channels, uint32_t *sampleRate, status_t *status)
+        uint32_t devices, audio_output_flags_t flags, int *format, uint32_t *channels, uint32_t *sampleRate, status_t *status)
 {
     { // scope for the lock
         android::Mutex::Autolock lock(mLock);
@@ -173,7 +175,7 @@ AudioStreamOut* AudioHardware::openOutputStream(
 void AudioHardware::closeOutputStream(AudioStreamOut* out) {
     android::Mutex::Autolock lock(mLock);
     if (mOutput == 0 || mOutput != out) {
-        LOGW("Attempt to close invalid output stream");
+        ALOGW("Attempt to close invalid output stream");
     }
     else {
         delete mOutput;
@@ -214,7 +216,7 @@ void AudioHardware::closeInputStream(AudioStreamIn* in) {
 
     ssize_t index = mInputs.indexOf((AudioStreamInMSM72xx *)in);
     if (index < 0) {
-        LOGW("Attempt to close invalid input stream");
+        ALOGW("Attempt to close invalid input stream");
     } else {
         mLock.unlock();
         delete mInputs[index];
@@ -228,13 +230,13 @@ static status_t set_volume_rpc(uint32_t volume)
     int fd = -1;
     fd = open("/dev/msm_audio_ctl", O_RDWR);
     if (fd < 0) {
-        LOGE("Cannot open msm_audio_ctl device\n");
+        ALOGE("Cannot open msm_audio_ctl device\n");
         return -1;
     }
     volume *= 20; //percentage
-    LOGD("Setting in-call volume to %d\n", volume);
+    ALOGD("Setting in-call volume to %d\n", volume);
     if (ioctl(fd, AUDIO_SET_VOLUME, &volume)) {
-        LOGW("Cannot set volume on current device\n");
+        ALOGW("Cannot set volume on current device\n");
     }
     close(fd);
     return NO_ERROR;
@@ -259,7 +261,7 @@ status_t AudioHardware::setMode(int mode)
         // during Ring state.
         if (mode == AudioSystem::MODE_RINGTONE)
         {
-          LOGV("Setting Voice volume to 0");
+          ALOGV("Setting Voice volume to 0");
           set_volume_rpc(0);
         }
     }
@@ -281,12 +283,12 @@ static status_t set_mic_mute(bool _mute)
     int fd = -1;
     fd = open("/dev/msm_audio_ctl", O_RDWR);
     if (fd < 0) {
-        LOGE("Cannot open msm_audio_ctl device\n");
+        ALOGE("Cannot open msm_audio_ctl device\n");
         return -1;
     }
-    LOGD("Setting mic mute to %d\n", mute);
+    ALOGD("Setting mic mute to %d\n", mute);
     if (ioctl(fd, AUDIO_SET_MUTE, &mute)) {
-        LOGE("Cannot set mic mute on current device\n");
+        ALOGE("Cannot set mic mute on current device\n");
         close(fd);
         return -1;
     }
@@ -326,7 +328,7 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
     const char BT_NREC_VALUE_ON[] = "on";
 
 
-    LOGV("setParameters() %s", keyValuePairs.string());
+    ALOGV("setParameters() %s", keyValuePairs.string());
 
     if (keyValuePairs.length() == 0) return BAD_VALUE;
 
@@ -336,7 +338,7 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
             mBluetoothNrec = true;
         } else {
             mBluetoothNrec = false;
-            LOGI("Turning noise reduction and echo cancellation off for BT "
+            ALOGI("Turning noise reduction and echo cancellation off for BT "
                  "headset");
         }
     }
@@ -348,12 +350,12 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
             if (!strcasecmp(value.string(), mBTEndpoints[i].name)) {
                 mBluetoothIdTx = mBTEndpoints[i].tx;
                 mBluetoothIdRx = mBTEndpoints[i].rx;
-                LOGI("Using custom acoustic parameters for %s", value.string());
+                ALOGI("Using custom acoustic parameters for %s", value.string());
                 break;
             }
         }
         if (mBluetoothIdTx == 0) {
-            LOGI("Using default acoustic parameters "
+            ALOGI("Using default acoustic parameters "
                  "(%s not in acoustic database)", value.string());
         }
         doRouting(NULL);
@@ -363,10 +365,10 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
     if (param.get(key, value) == NO_ERROR) {
         if (value == "true") {
             mDualMicEnabled = true;
-            LOGI("DualMike feature Enabled");
+            ALOGI("DualMike feature Enabled");
         } else {
             mDualMicEnabled = false;
-            LOGI("DualMike feature Disabled");
+            ALOGI("DualMike feature Disabled");
         }
         doRouting(NULL);
     }
@@ -401,7 +403,7 @@ String8 AudioHardware::getParameters(const String8& keys)
         reply.add(key, value);
     }
 
-    LOGV("getParameters() %s", keys.string());
+    ALOGV("getParameters() %s", keys.string());
 
     return reply.toString();
 }
@@ -433,15 +435,15 @@ size_t AudioHardware::getInputBufferSize(uint32_t sampleRate, int format, int ch
         case AudioSystem::AAC:
              break;
         default:
-            LOGW("getInputBufferSize bad format: %d", format);
+            ALOGW("getInputBufferSize bad format: %d", format);
             return 0;
     }
     if (channelCount < 1 || channelCount > 2) {
-        LOGW("getInputBufferSize bad channel count: %d", channelCount);
+        ALOGW("getInputBufferSize bad channel count: %d", channelCount);
         return 0;
     }
     if (sampleRate < 8000 || sampleRate > 48000) {
-        LOGW("getInputBufferSize bad sample rate: %d", sampleRate);
+        ALOGW("getInputBufferSize bad sample rate: %d", sampleRate);
         return 0;
     }
 
@@ -464,21 +466,21 @@ status_t AudioHardware::setVoiceVolume(float v)
 {
     if (mMode != AudioSystem::MODE_IN_CALL)
     {
-//        LOGE("setVoiceVolume called in wrong mode. Rejecting the call");
+//        ALOGE("setVoiceVolume called in wrong mode. Rejecting the call");
         return NO_ERROR;
     }
 
     if (v < 0.0) {
-        LOGW("setVoiceVolume(%f) under 0.0, assuming 0.0\n", v);
+        ALOGW("setVoiceVolume(%f) under 0.0, assuming 0.0\n", v);
         v = 0.0;
     } else if (v > 1.0) {
-        LOGW("setVoiceVolume(%f) over 1.0, assuming 1.0\n", v);
+        ALOGW("setVoiceVolume(%f) over 1.0, assuming 1.0\n", v);
         v = 1.0;
     }
 
     int vol = lrint(v * VOICE_VOLUME_MAX);
-    LOGD("setVoiceVolume(%f)\n", v);
-    LOGI("Setting in-call volume to %d (available range is 0 to %d)\n", vol, VOICE_VOLUME_MAX);
+    ALOGD("setVoiceVolume(%f)\n", v);
+    ALOGI("Setting in-call volume to %d (available range is 0 to %d)\n", vol, VOICE_VOLUME_MAX);
 
     android::Mutex::Autolock lock(mLock);
     set_volume_rpc(vol); //always set current device
@@ -488,7 +490,7 @@ status_t AudioHardware::setVoiceVolume(float v)
 
 status_t AudioHardware::setMasterVolume(float v)
 {
-    LOGI("Set master volume to %f.\n", v);
+    ALOGI("Set master volume to %f.\n", v);
     // We return an error code here to let the audioflinger do in-software
     // volume on top of the maximum volume that we set through the SND API.
     // return error - software mixer will handle it
@@ -517,16 +519,16 @@ status_t AudioHardware::AudioStreamInMSM72xx::disableDualMicIfNeeded() {
 
         fd = open("/dev/msm_audio_ctl", O_RDWR);
         if (fd < 0)        {
-           LOGE("Cannot open msm_audio_ctl");
+           ALOGE("Cannot open msm_audio_ctl");
            return -1;
         }
         if (ioctl(fd, AUDIO_SWITCH_DEVICE, &out_device)) {
-           LOGE("Cannot switch audio device");
+           ALOGE("Cannot switch audio device");
            close(fd);
            return -1;
         }
         if (ioctl(fd, AUDIO_SWITCH_DEVICE, &mic_device)) {
-           LOGE("Cannot switch mic device");
+           ALOGE("Cannot switch mic device");
            close(fd);
            return -1;
         }
@@ -542,7 +544,7 @@ static status_t do_route_audio_dev_ctrl(uint32_t device, bool inCall)
     if (device == SND_DEVICE_CURRENT)
         goto Incall;
     // hack -- kernel needs to put these in include file
-    LOGD("Switching audio device to ");
+    ALOGD("Switching audio device to ");
     if (device == SND_DEVICE_HANDSET) {
            char value[PROPERTY_VALUE_MAX];
            property_get("ro.product.device",value,"0");
@@ -552,91 +554,91 @@ static status_t do_route_audio_dev_ctrl(uint32_t device, bool inCall)
            } else
                 out_device[0] = HANDSET_SPKR;
                 mic_device[0] = HANDSET_MIC;
-           LOGD("Handset");
+           ALOGD("Handset");
     } else if ((device  == SND_DEVICE_BT) || (device == SND_DEVICE_BT_EC_OFF)) {
            out_device[0] = BT_SCO_SPKR;
            mic_device[0] = BT_SCO_MIC;
-           LOGD("BT Headset");
+           ALOGD("BT Headset");
     } else if (device == SND_DEVICE_SPEAKER ||
                device == SND_DEVICE_SPEAKER_BACK_MIC) {
            out_device[0] = SPKR_PHONE_MONO;
            mic_device[0] = SPKR_PHONE_MIC;
-           LOGD("Speakerphone");
+           ALOGD("Speakerphone");
     } else if (device == SND_DEVICE_HEADSET) {
            out_device[0] = HEADSET_SPKR_STEREO;
            mic_device[0] = HEADSET_MIC;
-           LOGD("Stereo Headset");
+           ALOGD("Stereo Headset");
     } else if (device == SND_DEVICE_HEADSET_AND_SPEAKER) {
            out_device[0] = SPKR_PHONE_HEADSET_STEREO;
            mic_device[0] = HEADSET_MIC;
-           LOGD("Stereo Headset + Speaker");
+           ALOGD("Stereo Headset + Speaker");
     } else if (device == SND_DEVICE_HEADSET_AND_SPEAKER_BACK_MIC) {
            out_device[0] = SPKR_PHONE_HEADSET_STEREO;
            mic_device[0] = SPKR_PHONE_MIC;
-           LOGD("Stereo Headset + Speaker and back mic");
+           ALOGD("Stereo Headset + Speaker and back mic");
     } else if (device == SND_DEVICE_NO_MIC_HEADSET) {
            out_device[0] = HEADSET_SPKR_STEREO;
            mic_device[0] = HANDSET_MIC;
-           LOGD("No microphone Wired Headset");
+           ALOGD("No microphone Wired Headset");
     } else if (device == SND_DEVICE_NO_MIC_HEADSET_BACK_MIC) {
            out_device[0] = HEADSET_SPKR_STEREO;
            mic_device[0] = SPKR_PHONE_MIC;
-           LOGD("No microphone Wired Headset and back mic");
+           ALOGD("No microphone Wired Headset and back mic");
     } else if (device == SND_DEVICE_HANDSET_BACK_MIC) {
            out_device[0] = HANDSET_SPKR;
            mic_device[0] = SPKR_PHONE_MIC;
-           LOGD("Handset and back mic");
+           ALOGD("Handset and back mic");
     } else if (device == SND_DEVICE_FM_HEADSET) {
            out_device[0] = FM_HEADSET;
            mic_device[0] = HEADSET_MIC;
-           LOGD("Stereo FM headset");
+           ALOGD("Stereo FM headset");
     } else if (device == SND_DEVICE_FM_SPEAKER) {
            out_device[0] = FM_SPKR;
            mic_device[0] = HEADSET_MIC;
-           LOGD("Stereo FM speaker");
+           ALOGD("Stereo FM speaker");
     } else if (device == SND_DEVICE_TTY_FULL) {
            out_device[0] = TTY_HEADSET_SPKR;
            mic_device[0] = TTY_HEADSET_MIC;
-           LOGD("TTY headset in FULL mode\n");
+           ALOGD("TTY headset in FULL mode\n");
     } else if (device == SND_DEVICE_TTY_VCO) {
            out_device[0] = TTY_HEADSET_SPKR;
            mic_device[0] = HANDSET_MIC;
-           LOGD("TTY headset in VCO mode\n");
+           ALOGD("TTY headset in VCO mode\n");
     } else if (device == SND_DEVICE_TTY_HCO) {
            out_device[0] = HANDSET_SPKR;
            mic_device[0] = TTY_HEADSET_MIC;
-           LOGD("TTY headset in HCO mode\n");
+           ALOGD("TTY headset in HCO mode\n");
     } else if (device == SND_DEVICE_HANDSET_DUAL_MIC) {
            out_device[0] = HANDSET_SPKR;
            mic_device[0] = HANDSET_DUALMIC;
            mic_device[1] = MIKE_ID_HANDSET;
-           LOGD("Handset with DualMike");
+           ALOGD("Handset with DualMike");
     } else if (device == SND_DEVICE_SPEAKER_DUAL_MIC) {
            out_device[0] = SPKR_PHONE_MONO;
            mic_device[0] = SPKR_DUALMIC;
            mic_device[1] = MIKE_ID_SPKR;
-           LOGD("Speakerphone with DualMike");
+           ALOGD("Speakerphone with DualMike");
     } else if (device == SND_DEVICE_CARKIT) {
            out_device[0] = BT_SCO_SPKR;
            mic_device[0] = BT_SCO_MIC;
-           LOGD("Carkit");
+           ALOGD("Carkit");
     } else {
-           LOGE("unknown device %d", device);
+           ALOGE("unknown device %d", device);
            return -1;
     }
 
     fd = open("/dev/msm_audio_ctl", O_RDWR);
     if (fd < 0)        {
-       LOGE("Cannot open msm_audio_ctl");
+       ALOGE("Cannot open msm_audio_ctl");
        return -1;
     }
     if (ioctl(fd, AUDIO_SWITCH_DEVICE, &out_device)) {
-       LOGE("Cannot switch audio device");
+       ALOGE("Cannot switch audio device");
        close(fd);
        return -1;
     }
     if (ioctl(fd, AUDIO_SWITCH_DEVICE, &mic_device)) {
-       LOGE("Cannot switch mic device");
+       ALOGE("Cannot switch mic device");
        close(fd);
        return -1;
     }
@@ -650,16 +652,16 @@ Incall:
             fd = open("/dev/msm_audio_ctl", O_RDWR);
 
             if (fd < 0) {
-                LOGE("Cannot open msm_audio_ctl");
+                ALOGE("Cannot open msm_audio_ctl");
                 return -1;
             }
         }
         if (ioctl(fd, AUDIO_START_VOICE, NULL)) {
-               LOGE("Cannot start voice");
+               ALOGE("Cannot start voice");
                close(fd);
                return -1;
         }
-        LOGD("Voice Started!!");
+        ALOGD("Voice Started!!");
         voice_started = 1;
     }
     else if (inCall == false && voice_started) {
@@ -667,16 +669,16 @@ Incall:
             fd = open("/dev/msm_audio_ctl", O_RDWR);
 
             if (fd < 0) {
-                LOGE("Cannot open msm_audio_ctl");
+                ALOGE ("Cannot open msm_audio_ctl");
                 return -1;
             }
         }
         if (ioctl(fd, AUDIO_STOP_VOICE, NULL)) {
-               LOGE("Cannot stop voice");
+               ALOGE ("Cannot stop voice");
                close(fd);
                return -1;
         }
-        LOGD("Voice Stopped!!");
+        ALOGD("Voice Stopped!!");
         voice_started = 0;
     }
 
@@ -728,7 +730,7 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
 
     if (input != NULL) {
         uint32_t inputDevice = input->devices();
-        LOGI("do input routing device %x\n", inputDevice);
+        ALOGI("do input routing device %x\n", inputDevice);
         // ignore routing device information when we start a recording in voice
         // call
         // Recording will happen through currently active tx device
@@ -736,37 +738,37 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
             return NO_ERROR;
         if (inputDevice != 0) {
             if (inputDevice & AudioSystem::DEVICE_IN_BLUETOOTH_SCO_HEADSET) {
-                LOGI("Routing audio to Bluetooth PCM\n");
+                ALOGI("Routing audio to Bluetooth PCM\n");
                 sndDevice = SND_DEVICE_BT;
             } else if (inputDevice & AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_CARKIT) {
-               LOGI("Routing audio to Bluetooth car kit\n");
+               ALOGI("Routing audio to Bluetooth car kit\n");
                sndDevice = SND_DEVICE_CARKIT;
             } else if (inputDevice & AudioSystem::DEVICE_IN_WIRED_HEADSET) {
                 if ((outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET) &&
                         (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER)) {
-                            LOGI("Routing audio to Wired Headset and Speaker\n");
+                            ALOGI("Routing audio to Wired Headset and Speaker\n");
                             sndDevice = SND_DEVICE_HEADSET_AND_SPEAKER;
                 } else {
-                    LOGI("Routing audio to Wired Headset\n");
+                    ALOGI("Routing audio to Wired Headset\n");
                     sndDevice = SND_DEVICE_HEADSET;
                 }
             } else if (inputDevice & AudioSystem::DEVICE_IN_BACK_MIC) {
                 if (outputDevices & (AudioSystem:: DEVICE_OUT_WIRED_HEADSET) &&
                        (outputDevices & AudioSystem:: DEVICE_OUT_SPEAKER)) {
-                    LOGI("Routing audio to Wired Headset and Speaker with back mic\n");
+                    ALOGI("Routing audio to Wired Headset and Speaker with back mic\n");
                     sndDevice = SND_DEVICE_HEADSET_AND_SPEAKER_BACK_MIC;
                 } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
-                    LOGI("Routing audio to Speakerphone with back mic\n");
+                    ALOGI("Routing audio to Speakerphone with back mic\n");
                     sndDevice = SND_DEVICE_SPEAKER_BACK_MIC;
                 } else if (outputDevices == AudioSystem::DEVICE_OUT_EARPIECE) {
-                    LOGI("Routing audio to Handset with back mic\n");
+                    ALOGI("Routing audio to Handset with back mic\n");
                     sndDevice = SND_DEVICE_HANDSET_BACK_MIC;
                 } else {
-                    LOGI("Routing audio to Headset with back mic\n");
+                    ALOGI("Routing audio to Headset with back mic\n");
                     sndDevice = SND_DEVICE_NO_MIC_HEADSET_BACK_MIC;
                 }
             } else {
-                LOGI("Routing audio to Handset\n");
+                ALOGI("Routing audio to Handset\n");
                 sndDevice = SND_DEVICE_HANDSET;
             }
         }
@@ -776,7 +778,7 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
     if (sndDevice == -1) {
         if (outputDevices & (outputDevices - 1)) {
             if ((outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) == 0) {
-                LOGW("Hardware does not support requested route combination (%#X),"
+                ALOGW("Hardware does not support requested route combination (%#X),"
                         " picking closest possible route...", outputDevices);
             }
         }
@@ -784,52 +786,52 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
         if ((mTtyMode != TTY_OFF) && (mMode == AudioSystem::MODE_IN_CALL) &&
                 (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET)) {
             if (mTtyMode == TTY_FULL) {
-                LOGI("Routing audio to TTY FULL Mode\n");
+                ALOGI("Routing audio to TTY FULL Mode\n");
                 sndDevice = SND_DEVICE_TTY_FULL;
             } else if (mTtyMode == TTY_VCO) {
-                LOGI("Routing audio to TTY VCO Mode\n");
+                ALOGI("Routing audio to TTY VCO Mode\n");
                 sndDevice = SND_DEVICE_TTY_VCO;
             } else if (mTtyMode == TTY_HCO) {
-                LOGI("Routing audio to TTY HCO Mode\n");
+                ALOGI("Routing audio to TTY HCO Mode\n");
                 sndDevice = SND_DEVICE_TTY_HCO;
             }
         } else if (outputDevices &
                    (AudioSystem::DEVICE_OUT_BLUETOOTH_SCO | AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_HEADSET)) {
-            LOGI("Routing audio to Bluetooth PCM\n");
+            ALOGI("Routing audio to Bluetooth PCM\n");
             sndDevice = SND_DEVICE_BT;
         } else if (outputDevices & AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_CARKIT) {
-            LOGI("Routing audio to Bluetooth PCM\n");
+            ALOGI("Routing audio to Bluetooth PCM\n");
             sndDevice = SND_DEVICE_CARKIT;
         } else if ((outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET) &&
                 (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER)) {
-                    LOGI("Routing audio to Wired Headset and Speaker\n");
+                    ALOGI("Routing audio to Wired Headset and Speaker\n");
                     sndDevice = SND_DEVICE_HEADSET_AND_SPEAKER;
         } else if (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADPHONE) {
             if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
-                LOGI("Routing audio to No microphone Wired Headset and Speaker (%d,%x)\n", mMode, outputDevices);
+                ALOGI("Routing audio to No microphone Wired Headset and Speaker (%d,%x)\n", mMode, outputDevices);
                 sndDevice = SND_DEVICE_HEADSET_AND_SPEAKER;
             } else {
-                LOGI("Routing audio to No microphone Wired Headset (%d,%x)\n", mMode, outputDevices);
+                ALOGI("Routing audio to No microphone Wired Headset (%d,%x)\n", mMode, outputDevices);
                 sndDevice = SND_DEVICE_NO_MIC_HEADSET;
             }
         } else if (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET) {
-            LOGI("Routing audio to Wired Headset\n");
+            ALOGI("Routing audio to Wired Headset\n");
             sndDevice = SND_DEVICE_HEADSET;
         } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
-            LOGI("Routing audio to Speakerphone\n");
+            ALOGI("Routing audio to Speakerphone\n");
             sndDevice = SND_DEVICE_SPEAKER;
         } else {
-            LOGI("Routing audio to Handset\n");
+            ALOGI("Routing audio to Handset\n");
             sndDevice = SND_DEVICE_HANDSET;
         }
     }
 
     if (mDualMicEnabled && mMode == AudioSystem::MODE_IN_CALL && input && !(input->isRecordingEnabled())) {
         if (sndDevice == SND_DEVICE_HANDSET) {
-            LOGI("Routing audio to handset with DualMike enabled\n");
+            ALOGI("Routing audio to handset with DualMike enabled\n");
             sndDevice = SND_DEVICE_HANDSET_DUAL_MIC;
         } else if (sndDevice == SND_DEVICE_SPEAKER) {
-            LOGI("Routing audio to speakerphone with DualMike enabled\n");
+            ALOGI("Routing audio to speakerphone with DualMike enabled\n");
             sndDevice = SND_DEVICE_SPEAKER_DUAL_MIC;
         }
     }
@@ -843,7 +845,7 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
         // In few CDMA network, voice is heared even if the phone is in ring
         // mode. Ensure that the voice is muted at this point.
         else if (mMode == AudioSystem::MODE_RINGTONE) {
-            LOGV("Setting Voice volume to 0");
+            ALOGV("Setting Voice volume to 0");
             set_volume_rpc(0);
         }
     }
@@ -935,26 +937,26 @@ status_t AudioHardware::AudioStreamOutMSM72xx::openDriver()
     status_t status = NO_INIT;
 
     // open driver
-    LOGV("open pcm_out driver");
+    ALOGV("open pcm_out driver");
     status = ::open("/dev/msm_pcm_out", O_RDWR);
     if (status < 0) {
         if (errCount++ < 10) {
-            LOGE("Cannot open /dev/msm_pcm_out errno: %d", errno);
+            ALOGE ("Cannot open /dev/msm_pcm_out errno: %d", errno);
         }
         goto Error;
     }
     mFd = status;
 
     // configuration
-    LOGV("get config");
+    ALOGV("get config");
     struct msm_audio_config config;
     status = ioctl(mFd, AUDIO_GET_CONFIG, &config);
     if (status < 0) {
-        LOGE("Cannot read pcm_out config");
+        ALOGE ("Cannot read pcm_out config");
         goto Error;
     }
 
-    LOGV("set pcm_out config");
+    ALOGV("set pcm_out config");
     config.channel_count = AudioSystem::popCount(channels());
     config.sample_rate = mSampleRate;
     config.buffer_size = mBufferSize;
@@ -962,22 +964,22 @@ status_t AudioHardware::AudioStreamOutMSM72xx::openDriver()
     config.type = CODEC_TYPE_PCM;
     status = ioctl(mFd, AUDIO_SET_CONFIG, &config);
     if (status < 0) {
-        LOGE("Cannot set config");
+        ALOGE ("Cannot set config");
         goto Error;
     }
 
-    LOGV("buffer_size: %u", config.buffer_size);
-    LOGV("buffer_count: %u", config.buffer_count);
-    LOGV("channel_count: %u", config.channel_count);
-    LOGV("sample_rate: %u", config.sample_rate);
+    ALOGV("buffer_size: %u", config.buffer_size);
+    ALOGV("buffer_count: %u", config.buffer_count);
+    ALOGV("channel_count: %u", config.channel_count);
+    ALOGV("sample_rate: %u", config.sample_rate);
 
     status = ioctl(mFd, AUDIO_START, 0);
     if (status < 0) {
-        LOGE("Cannot start pcm playback");
+        ALOGE ("Cannot start pcm playback");
         goto Error;
     }
 
-    LOGV("acquire output wakelock");
+    ALOGV("acquire output wakelock");
     acquire_wake_lock(PARTIAL_WAKE_LOCK, kOutputWakelockStr);
 
     return status;
@@ -1041,7 +1043,7 @@ AudioHardware::AudioStreamOutMSM72xx::~AudioStreamOutMSM72xx()
 
 ssize_t AudioHardware::AudioStreamOutMSM72xx::write(const void* buffer, size_t bytes)
 {
-    // LOGD("AudioStreamOutMSM72xx::write(%p, %u)", buffer, bytes);
+    // ALOGD("AudioStreamOutMSM72xx::write(%p, %u)", buffer, bytes);
     status_t status = NO_INIT;
     size_t count = bytes;
     const uint8_t* p = static_cast<const uint8_t*>(buffer);
@@ -1064,7 +1066,7 @@ ssize_t AudioHardware::AudioStreamOutMSM72xx::write(const void* buffer, size_t b
         } else {
             if (errno != EAGAIN) return written;
             mRetryCount++;
-            LOGW("EAGAIN - retry");
+            ALOGW("EAGAIN - retry");
         }
     }
 
@@ -1083,11 +1085,11 @@ status_t AudioHardware::AudioStreamOutMSM72xx::standby()
     if (!mStandby && mFd >= 0) {
         ::close(mFd);
         mFd = -1;
-        LOGV("release output wakelock");
+        ALOGV("release output wakelock");
         release_wake_lock(kOutputWakelockStr);
     }
     mStandby = true;
-    LOGI("AudioHardware pcm playback is going to standby.");
+    ALOGI("AudioHardware pcm playback is going to standby.");
     return status;
 }
 
@@ -1131,11 +1133,11 @@ status_t AudioHardware::AudioStreamOutMSM72xx::setParameters(const String8& keyV
     String8 key = String8(AudioParameter::keyRouting);
     status_t status = NO_ERROR;
     int device;
-    LOGV("AudioStreamOutMSM72xx::setParameters() %s", keyValuePairs.string());
+    ALOGV("AudioStreamOutMSM72xx::setParameters() %s", keyValuePairs.string());
 
     if (param.getInt(key, device) == NO_ERROR) {
         mDevices = device;
-        LOGV("set output routing %x", mDevices);
+        ALOGV("set output routing %x", mDevices);
         status = mHardware->doRouting(NULL);
         param.remove(key);
     }
@@ -1153,11 +1155,11 @@ String8 AudioHardware::AudioStreamOutMSM72xx::getParameters(const String8& keys)
     String8 key = String8(AudioParameter::keyRouting);
 
     if (param.get(key, value) == NO_ERROR) {
-        LOGV("get routing %x", mDevices);
+        ALOGV("get routing %x", mDevices);
         param.addInt(key, (int)mDevices);
     }
 
-    LOGV("AudioStreamOutMSM72xx::getParameters() %s", param.toString().string());
+    ALOGV("AudioStreamOutMSM72xx::getParameters() %s", param.toString().string());
     return param.toString();
 }
 
@@ -1212,9 +1214,9 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
     mHardware = hw;
     mBufferSize = AUDIO_HW_IN_BUFSZ * AudioSystem::popCount(*pChannels);
 
-    LOGV("AudioStreamInMSM72xx::set(%d, %x, %u)", *pFormat, *pChannels, *pRate);
+    ALOGV("AudioStreamInMSM72xx::set(%d, %x, %u)", *pFormat, *pChannels, *pRate);
     if (mFd >= 0) {
-        LOGE("Audio record already open");
+        ALOGE ("Audio record already open");
         return -EPERM;
     }
     struct msm_voicerec_mode voc_rec_cfg;
@@ -1225,7 +1227,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
            // open audio input device
            status = ::open("/dev/msm_pcm_in", O_RDWR);
            if (status < 0) {
-              LOGE("Cannot open /dev/msm_pcm_in errno: %d", errno);
+              ALOGE ("Cannot open /dev/msm_pcm_in errno: %d", errno);
               goto Error;
            }
            mFd = status;
@@ -1237,33 +1239,33 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           {
               if ((mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) &&
                    (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK)) {
-                   LOGI("Recording Source: Voice Call Both Uplink and Downlink");
+                   ALOGI("Recording Source: Voice Call Both Uplink and Downlink");
                   voc_rec_cfg.rec_mode = VOC_REC_BOTH;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) {
-                  LOGI("Recording Source: Voice Call DownLink");
+                  ALOGI("Recording Source: Voice Call DownLink");
                   voc_rec_cfg.rec_mode = VOC_REC_DOWNLINK;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK) {
-                  LOGI("Recording Source: Voice Call UpLink");
+                  ALOGI("Recording Source: Voice Call UpLink");
                   voc_rec_cfg.rec_mode = VOC_REC_UPLINK;
               }
 
               if (ioctl(mFd, AUDIO_SET_INCALL, &voc_rec_cfg))
               {
-                 LOGE("Error: AUDIO_SET_INCALL failed\n");
+                 ALOGE ("Error: AUDIO_SET_INCALL failed\n");
                  goto  Error;
               }
           }
 
           // configuration
-          LOGV("get config");
+          ALOGV("get config");
           struct msm_audio_config config;
           status = ioctl(mFd, AUDIO_GET_CONFIG, &config);
           if (status < 0) {
-             LOGE("Cannot read config");
+             ALOGE ("Cannot read config");
              goto Error;
           }
 
-          LOGV("set config");
+          ALOGV("set config");
           if (*pChannels & (AudioSystem::CHANNEL_IN_MONO))
               config.channel_count =  1;
           else if (*pChannels & (AudioSystem::CHANNEL_IN_STEREO))
@@ -1275,7 +1277,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           config.type = CODEC_TYPE_PCM;
           status = ioctl(mFd, AUDIO_SET_CONFIG, &config);
           if (status < 0) {
-             LOGE("Cannot set config");
+             ALOGE ("Cannot set config");
              if (ioctl(mFd, AUDIO_GET_CONFIG, &config) == 0) {
                  if (config.channel_count == 1) {
                     *pChannels = AudioSystem::CHANNEL_IN_MONO;
@@ -1287,16 +1289,16 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
              goto Error;
           }
 
-          LOGV("confirm config");
+          ALOGV("confirm config");
           status = ioctl(mFd, AUDIO_GET_CONFIG, &config);
           if (status < 0) {
-              LOGE("Cannot read config");
+              ALOGE ("Cannot read config");
               goto Error;
           }
-          LOGV("buffer_size: %u", config.buffer_size);
-          LOGV("buffer_count: %u", config.buffer_count);
-          LOGV("channel_count: %u", config.channel_count);
-          LOGV("sample_rate: %u", config.sample_rate);
+          ALOGV("buffer_size: %u", config.buffer_size);
+          ALOGV("buffer_count: %u", config.buffer_count);
+          ALOGV("channel_count: %u", config.channel_count);
+          ALOGV("sample_rate: %u", config.sample_rate);
 
           mDevices = devices;
           mFormat = AUDIO_HW_IN_FORMAT;
@@ -1307,11 +1309,11 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
         }
         case AudioSystem::AMR_NB:
         {
-          LOGI("Recording format: AMR_NB");
+          ALOGI("Recording format: AMR_NB");
           // open amrnb input device
           status = ::open(AMRNB_DEVICE_IN, O_RDWR);
           if (status < 0) {
-              LOGE("Cannot open amrnb device for read");
+              ALOGE ("Cannot open amrnb device for read");
               goto Error;
           }
           mFd = status;
@@ -1322,19 +1324,19 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           {
               if ((mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) &&
                    (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK)) {
-                   LOGI("Recording Source: Voice Call Both Uplink and Downlink");
+                   ALOGI("Recording Source: Voice Call Both Uplink and Downlink");
                   voc_rec_cfg.rec_mode = VOC_REC_BOTH;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) {
-                  LOGI("Recording Source: Voice Call DownLink");
+                  ALOGI("Recording Source: Voice Call DownLink");
                   voc_rec_cfg.rec_mode = VOC_REC_DOWNLINK;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK) {
-                  LOGI("Recording Source: Voice Call UpLink");
+                  ALOGI("Recording Source: Voice Call UpLink");
                   voc_rec_cfg.rec_mode = VOC_REC_UPLINK;
               }
 
               if (ioctl(mFd, AUDIO_SET_INCALL, &voc_rec_cfg))
               {
-                 LOGE("Error: AUDIO_SET_INCALL failed\n");
+                 ALOGE ("Error: AUDIO_SET_INCALL failed\n");
                  goto  Error;
               }
           }
@@ -1346,30 +1348,30 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
 
           if (ioctl(mFd, AUDIO_GET_AMRNB_ENC_CONFIG, &amrnb_enc_cfg))
           {
-            LOGE("Error: AUDIO_GET_AMRNB_ENC_CONFIG failed\n");
+            ALOGE ("Error: AUDIO_GET_AMRNB_ENC_CONFIG failed\n");
             goto  Error;
           }
 
-          LOGV("The Config band mode is %d", amrnb_enc_cfg.band_mode);
-          LOGV("The Config dtx_enable is %d", amrnb_enc_cfg.dtx_enable);
+          ALOGV("The Config band mode is %d", amrnb_enc_cfg.band_mode);
+          ALOGV("The Config dtx_enable is %d", amrnb_enc_cfg.dtx_enable);
 
           amrnb_enc_cfg.band_mode =  7;
           amrnb_enc_cfg.dtx_enable = 0;
 
           if (ioctl(mFd, AUDIO_SET_AMRNB_ENC_CONFIG, &amrnb_enc_cfg))
           {
-            LOGE("Error: AUDIO_SET_AMRNB_ENC_CONFIG failed\n");
+            ALOGE ("Error: AUDIO_SET_AMRNB_ENC_CONFIG failed\n");
             goto  Error;
           }
           break;
         }
         /*case AudioSystem::EVRC:
         {
-          LOGI("Recording format: EVRC");
+          ALOGI("Recording format: EVRC");
           // open evrc input device
           status = ::open(EVRC_DEVICE_IN, O_RDWR);
           if (status < 0) {
-              LOGE("Cannot open evrc device for read");
+              ALOGE ("Cannot open evrc device for read");
               goto Error;
           }
           mFd = status;
@@ -1380,19 +1382,19 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           {
               if ((mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) &&
                    (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK)) {
-                   LOGI("Recording Source: Voice Call Both Uplink and Downlink");
+                   ALOGI("Recording Source: Voice Call Both Uplink and Downlink");
                   voc_rec_cfg.rec_mode = VOC_REC_BOTH;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) {
-                  LOGI("Recording Source: Voice Call DownLink");
+                  ALOGI("Recording Source: Voice Call DownLink");
                   voc_rec_cfg.rec_mode = VOC_REC_DOWNLINK;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK) {
-                  LOGI("Recording Source: Voice Call UpLink");
+                  ALOGI("Recording Source: Voice Call UpLink");
                   voc_rec_cfg.rec_mode = VOC_REC_UPLINK;
               }
 
               if (ioctl(mFd, AUDIO_SET_INCALL, &voc_rec_cfg))
               {
-                 LOGE("Error: AUDIO_SET_INCALL failed\n");
+                 ALOGE ("Error: AUDIO_SET_INCALL failed\n");
                  goto  Error;
               }
           }
@@ -1404,31 +1406,31 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
 
           if (ioctl(mFd, AUDIO_GET_EVRC_ENC_CONFIG, &evrc_enc_cfg))
           {
-            LOGE("Error: AUDIO_GET_EVRC_ENC_CONFIG failed\n");
+            ALOGE ("Error: AUDIO_GET_EVRC_ENC_CONFIG failed\n");
             goto  Error;
           }
 
-          LOGV("The Config cdma_rate is %d", evrc_enc_cfg.cdma_rate);
-          LOGV("The Config min_bit_rate is %d", evrc_enc_cfg.min_bit_rate);
-          LOGV("The Config max_bit_rate is %d", evrc_enc_cfg.max_bit_rate);
+          ALOGV("The Config cdma_rate is %d", evrc_enc_cfg.cdma_rate);
+          ALOGV("The Config min_bit_rate is %d", evrc_enc_cfg.min_bit_rate);
+          ALOGV("The Config max_bit_rate is %d", evrc_enc_cfg.max_bit_rate);
 
           evrc_enc_cfg.min_bit_rate = 4; //CDMA Full rate
           evrc_enc_cfg.max_bit_rate = 4; //CDMA Full rate
 
           if (ioctl(mFd, AUDIO_SET_EVRC_ENC_CONFIG, &evrc_enc_cfg))
           {
-            LOGE("Error: AUDIO_SET_EVRC_ENC_CONFIG failed\n");
+            ALOGE ("Error: AUDIO_SET_EVRC_ENC_CONFIG failed\n");
             goto  Error;
           }
           break;
         }
         case AudioSystem::QCELP:
         {
-          LOGI("Recording format: QCELP");
+          ALOGI("Recording format: QCELP");
           // open qcelp input device
           status = ::open(QCELP_DEVICE_IN, O_RDWR);
           if (status < 0) {
-              LOGE("Cannot open qcelp device for read");
+              ALOGE ("Cannot open qcelp device for read");
               goto Error;
           }
           mFd = status;
@@ -1439,19 +1441,19 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           {
               if ((mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) &&
                    (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK)) {
-                   LOGI("Recording Source: Voice Call Both Uplink and Downlink");
+                   ALOGI("Recording Source: Voice Call Both Uplink and Downlink");
                   voc_rec_cfg.rec_mode = VOC_REC_BOTH;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) {
-                  LOGI("Recording Source: Voice Call DownLink");
+                  ALOGI("Recording Source: Voice Call DownLink");
                   voc_rec_cfg.rec_mode = VOC_REC_DOWNLINK;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK) {
-                  LOGI("Recording Source: Voice Call UpLink");
+                  ALOGI("Recording Source: Voice Call UpLink");
                   voc_rec_cfg.rec_mode = VOC_REC_UPLINK;
               }
 
               if (ioctl(mFd, AUDIO_SET_INCALL, &voc_rec_cfg))
               {
-                 LOGE("Error: AUDIO_SET_INCALL failed\n");
+                 ALOGE ("Error: AUDIO_SET_INCALL failed\n");
                  goto  Error;
               }
           }
@@ -1463,20 +1465,20 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
 
           if (ioctl(mFd, AUDIO_GET_QCELP_ENC_CONFIG, &qcelp_enc_cfg))
           {
-            LOGE("Error: AUDIO_GET_QCELP_ENC_CONFIG failed\n");
+            ALOGE ("Error: AUDIO_GET_QCELP_ENC_CONFIG failed\n");
             goto  Error;
           }
 
-          LOGV("The Config cdma_rate is %d", qcelp_enc_cfg.cdma_rate);
-          LOGV("The Config min_bit_rate is %d", qcelp_enc_cfg.min_bit_rate);
-          LOGV("The Config max_bit_rate is %d", qcelp_enc_cfg.max_bit_rate);
+          ALOGV("The Config cdma_rate is %d", qcelp_enc_cfg.cdma_rate);
+          ALOGV("The Config min_bit_rate is %d", qcelp_enc_cfg.min_bit_rate);
+          ALOGV("The Config max_bit_rate is %d", qcelp_enc_cfg.max_bit_rate);
 
           qcelp_enc_cfg.min_bit_rate = 4; //CDMA Full rate
           qcelp_enc_cfg.max_bit_rate = 4; //CDMA Full rate
 
           if (ioctl(mFd, AUDIO_SET_QCELP_ENC_CONFIG, &qcelp_enc_cfg))
           {
-            LOGE("Error: AUDIO_SET_QCELP_ENC_CONFIG failed\n");
+            ALOGE ("Error: AUDIO_SET_QCELP_ENC_CONFIG failed\n");
             goto  Error;
           }
           break;
@@ -1486,7 +1488,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
            // open AAC input device
            status = ::open(AAC_DEVICE_IN, O_RDWR);
            if (status < 0) {
-               LOGE("Cannot open AAC input  device for read");
+               ALOGE ("Cannot open AAC input  device for read");
                goto Error;
            }
            mFd = status;
@@ -1494,22 +1496,22 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           struct msm_audio_stream_config aac_stream_config;
           if(ioctl(mFd, AUDIO_GET_STREAM_CONFIG, &aac_stream_config))
           {
-             LOGE(" Error getting buf config param AUDIO_GET_STREAM_CONFIG \n");
+             ALOGE (" Error getting buf config param AUDIO_GET_STREAM_CONFIG \n");
              goto  Error;
           }
 
-          LOGV("The Config buffer size is %d", aac_stream_config.buffer_size);
-          LOGV("The Config buffer count is %d", aac_stream_config.buffer_count);
+          ALOGV("The Config buffer size is %d", aac_stream_config.buffer_size);
+          ALOGV("The Config buffer count is %d", aac_stream_config.buffer_count);
 
           /* Config param */
           struct msm_audio_aac_enc_config config;
           if(ioctl(mFd, AUDIO_GET_AAC_ENC_CONFIG, &config))
           {
-             LOGE(" Error getting buf config param AUDIO_GET_CONFIG \n");
+             ALOGE (" Error getting buf config param AUDIO_GET_CONFIG \n");
              goto  Error;
           }
 
-          LOGV("The Config Sample rate is %d", config.sample_rate);
+          ALOGV("The Config Sample rate is %d", config.sample_rate);
 
           mDevices = devices;
           mChannels = *pChannels;
@@ -1518,19 +1520,19 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           {
               if ((mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) &&
                    (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK)) {
-                   LOGI("Recording Source: Voice Call Both Uplink and Downlink");
+                   ALOGI("Recording Source: Voice Call Both Uplink and Downlink");
                   voc_rec_cfg.rec_mode = VOC_REC_BOTH;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_DNLINK) {
-                  LOGI("Recording Source: Voice Call DownLink");
+                  ALOGI("Recording Source: Voice Call DownLink");
                   voc_rec_cfg.rec_mode = VOC_REC_DOWNLINK;
               } else if (mChannels & AudioSystem::CHANNEL_IN_VOICE_UPLINK) {
-                  LOGI("Recording Source: Voice Call UpLink");
+                  ALOGI("Recording Source: Voice Call UpLink");
                   voc_rec_cfg.rec_mode = VOC_REC_UPLINK;
               }
 
               if (ioctl(mFd, AUDIO_SET_INCALL, &voc_rec_cfg))
               {
-                 LOGE("Error: AUDIO_SET_INCALL failed\n");
+                 ALOGE ("Error: AUDIO_SET_INCALL failed\n");
                  goto  Error;
               }
           }
@@ -1552,7 +1554,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           config.stream_format = AUDIO_AAC_FORMAT_RAW;
 
           if (ioctl(mFd, AUDIO_SET_AAC_ENC_CONFIG, &config)) {
-            LOGE(" Error in setting config of msm_pcm_in device \n");
+            ALOGE (" Error in setting config of msm_pcm_in device \n");
             goto Error;
           }
           break;
@@ -1567,7 +1569,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
     // have to follow Open -> Start -> Close).
     mHardware->set_mRecordState(1);
     if (ioctl(mFd, AUDIO_START, 0)) {
-        LOGE("Error starting record");
+        ALOGE ("Error starting record");
         return -1;
     }
 
@@ -1584,13 +1586,13 @@ Error:
 
 AudioHardware::AudioStreamInMSM72xx::~AudioStreamInMSM72xx()
 {
-    LOGV("AudioStreamInMSM72xx destructor");
+    ALOGV("AudioStreamInMSM72xx destructor");
     standby();
 }
 
 ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
 {
-    LOGV("AudioStreamInMSM72xx::read(%p, %ld)", buffer, bytes);
+    ALOGV("AudioStreamInMSM72xx::read(%p, %ld)", buffer, bytes);
     if (!mHardware) return -1;
 
     size_t count = bytes;
@@ -1617,17 +1619,17 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
         mHardware->clearCurDevice();
         mHardware->doRouting(this);
         if (ioctl(mFd, AUDIO_START, 0)) {
-            LOGE("Error starting record");
+            ALOGE ("Error starting record");
             standby();
             return -1;
         }
-        LOGI("AUDIO_START: start kernel pcm_in driver.");
+        ALOGI("AUDIO_START: start kernel pcm_in driver.");
         mState = AUDIO_INPUT_STARTED;
     }
 
     if (mFormat == AudioSystem::AAC) {
        if (bytes < 512) {
-        LOGE("Error, the buffer size passed is not compatible %d", bytes);
+        ALOGE ("Error, the buffer size passed is not compatible %d", bytes);
         return -1;
        }
     }
@@ -1653,11 +1655,11 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
               break;
           size_t bytesRead = ::read(mFd, p, count);
               if (bytesRead > 0) {
-                  LOGV("Number of Bytes read = %d", bytesRead);
+                  ALOGV("Number of Bytes read = %d", bytesRead);
                   count -= bytesRead;
                   p += bytesRead;
                   bytes += bytesRead;
-                  LOGV("Total Number of Bytes read = %d", bytes);
+                  ALOGV("Total Number of Bytes read = %d", bytes);
                   *frameSizePtr =  bytesRead;
                   (*frameCountPtr)++;
                   if(!mFirstread)
@@ -1667,7 +1669,7 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
                   }
               }
               else {
-                 LOGE("Error received from driver err = %d",bytesRead);
+                 ALOGE ("Error received from driver err = %d",bytesRead);
                  break;
               }
         }
@@ -1690,7 +1692,7 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
             {
                 if (errno != EAGAIN) return bytesRead;
                 mRetryCount++;
-                LOGW("EAGAIN - retrying");
+                ALOGW("EAGAIN - retrying");
             }
         }
         break;
@@ -1712,7 +1714,7 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
             else {
                 if (errno != EAGAIN) return bytesRead;
                 mRetryCount++;
-                LOGW("EAGAIN - retrying");
+                ALOGW("EAGAIN - retrying");
             }
         }
         break;
@@ -1734,7 +1736,7 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
             else {
                 if (errno != EAGAIN) return bytesRead;
                 mRetryCount++;
-                LOGW("EAGAIN - retrying");
+                ALOGW("EAGAIN - retrying");
             }
         }
         break;
@@ -1756,7 +1758,7 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
             else {
                 if (errno != EAGAIN) return bytesRead;
                 mRetryCount++;
-                LOGW("EAGAIN - retrying");
+                ALOGW("EAGAIN - retrying");
             }
         }
         break;
@@ -1783,7 +1785,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::standby()
         mState = AUDIO_INPUT_CLOSED;
     }
     mRecordingEnabled = false;
-    LOGI("AudioHardware PCM record is going to standby.");
+    ALOGI("AudioHardware PCM record is going to standby.");
     // restore output routing if necessary
     mHardware->clearCurDevice();
     mHardware->doRouting(this);
@@ -1822,10 +1824,10 @@ status_t AudioHardware::AudioStreamInMSM72xx::setParameters(const String8& keyVa
     status_t status = NO_ERROR;
     int device;
     String8 key = String8(AudioParameter::keyRouting);
-    LOGV("AudioStreamInMSM72xx::setParameters() %s", keyValuePairs.string());
+    ALOGV("AudioStreamInMSM72xx::setParameters() %s", keyValuePairs.string());
 
     if (param.getInt(key, device) == NO_ERROR) {
-        LOGV("set input routing %x", device);
+        ALOGV("set input routing %x", device);
         if (device & (device - 1)) {
             status = BAD_VALUE;
         } else {
@@ -1848,11 +1850,11 @@ String8 AudioHardware::AudioStreamInMSM72xx::getParameters(const String8& keys)
     String8 key = String8(AudioParameter::keyRouting);
 
     if (param.get(key, value) == NO_ERROR) {
-        LOGV("get routing %x", mDevices);
+        ALOGV("get routing %x", mDevices);
         param.addInt(key, (int)mDevices);
     }
 
-    LOGV("AudioStreamInMSM72xx::getParameters() %s", param.toString().string());
+    ALOGV("AudioStreamInMSM72xx::getParameters() %s", param.toString().string());
     return param.toString();
 }
 

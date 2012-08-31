@@ -25,6 +25,8 @@
 # against the traditional rules of inheritance).
 
 
+BOARD_PROVIDES_LIBRIL := true
+
 #BUILD_LIBCAMERA := true
 
 #TARGET_CAMERA_WRAPPER := camera-s7

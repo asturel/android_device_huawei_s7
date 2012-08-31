@@ -187,12 +187,16 @@ public:
     virtual String8     getParameters(const String8& keys);
 
     // create I/O streams
-    virtual AudioStreamOut* openOutputStream(
+/*    virtual AudioStreamOut* openOutputStream(
                                 uint32_t devices,
                                 int *format=0,
                                 uint32_t *channels=0,
                                 uint32_t *sampleRate=0,
                                 status_t *status=0);
+*/
+
+AudioStreamOut* openOutputStream(
+        uint32_t devices, audio_output_flags_t flags, int *format=0, uint32_t *channels=0, uint32_t *sampleRate=0, status_t *status=0);
 
     virtual AudioStreamIn* openInputStream(
 
