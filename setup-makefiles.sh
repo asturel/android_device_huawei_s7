@@ -39,6 +39,18 @@ for FILE in `cat proprietary-files.txt | grep -v ^# | grep -v ^$`; do
     echo "    $OUTDIR/proprietary/$FILE:system/$FILE$LINEEND" >> $MAKEFILE
 done
 
+
+#cp ~/android/system2/kernel/huawei/s7/include/linux/msm*.h ~/android/system2/device/huawei/s7/include/linux/
+#cp ~/android/system2/kernel/huawei/s7/include/linux/android_pmem.h  ~/android/system2/device/huawei/s7/include/linux/
+#cp ~/android/system2/kernel/huawei/s7/include/linux/ashmem.h  ~/android/system2/device/huawei/s7/include/linux/
+#cp ~/android/system2/kernel/huawei/s7/include/linux/genlock.h  ~/android/system2/device/huawei/s7/include/linux/
+
+cp ~/Huawei_S7_kernel_2.6.32/include/linux/msm*.h ~/android/system2/device/huawei/s7/include/linux/
+cp ~/Huawei_S7_kernel_2.6.32/include/linux/android_pmem.h  ~/android/system2/device/huawei/s7/include/linux/
+cp ~/Huawei_S7_kernel_2.6.32/include/linux/ashmem.h  ~/android/system2/device/huawei/s7/include/linux/
+cp ~/Huawei_S7_kernel_2.6.32/include/linux/genlock.h  ~/android/system2/device/huawei/s7/include/linux/
+
+
 (cat << EOF) > ../../../$OUTDIR/$DEVICE-vendor.mk
 # Copyright (C) 2011 The CyanogenMod Project
 #

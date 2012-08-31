@@ -1,0 +1,3 @@
+#on early-init
+#    chown system system /sys/module/g_android/parameters/product_id
+#    write /sys/module/g_android/parameters/product_id 3610

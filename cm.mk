@@ -14,16 +14,18 @@
 # limitations under the License.
 #
 
-$(call inherit-product, device/huawei/s7/full_s7.mk)
+TARGET_BOOTANIMATION_NAME := vertical-480x800
+
+$(call inherit-product, device/huawei/s7/s7.mk)
 
 # Inherit some common CM9 stuff.
 $(call inherit-product-if-exists, vendor/cm/config/common_full_phone.mk)
 
 # Inherit some common CM stuff.
-$(call inherit-product-if-exists, vendor/cm/config/cdma.mk)
+$(call inherit-product-if-exists, vendor/cm/config/gsm.mk)
 
 PRODUCT_NAME := cm_s7
-PRODUCT_BRAND := huawei
+PRODUCT_BRAND := Huawei
 PRODUCT_DEVICE := s7
 PRODUCT_MODEL := s7
 PRODUCT_MANUFACTURER := huawei

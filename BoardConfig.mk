@@ -24,6 +24,31 @@
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
 
+
+#BUILD_LIBCAMERA := true
+
+#TARGET_CAMERA_WRAPPER := camera-s7
+
+#BOARD_USE_FROYO_LIBCAMERA := true
+
+#DEVICE_PROVISIONED := true
+
+TARGET_USES_OLD_LIBSENSORS_HAL := true
+#BOARD_VENDOR_USE_AKMD := akm8973
+
+TARGET_SPECIFIC_HEADER_PATH := device/huawei/s7/include
+
+TARGET_PREBUILT_RECOVERY_KERNEL := device/huawei/s7/kernel_recovery
+
+
+TARGET_PREBUILT_KERNEL := device/huawei/s7/kernel_legujabb
+
+BOARD_USE_LEGACY_TOUCHSCREEN := true
+
+# hdmi
+TARGET_USES_OVERLAY := false
+
+
 # Board properties
 TARGET_NO_BOOTLOADER := true
 TARGET_BOOTLOADER_BOARD_NAME := s7
@@ -38,10 +63,12 @@ TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 
 # Kernel
-TARGET_KERNEL_CONFIG := cyanogenmod_s7_defconfig
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.hardware=s7 no_console_suspend=1 msmsdcc_sdioirq=1
+#TARGET_KERNEL_CONFIG := cyanogenmod_s7_defconfig
+#BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.hardware=s7 no_console_suspend=1 msmsdcc_sdioirq=1
+BOARD_KERNEL_CMDLINE := console=ttyMSM2,115200n8 androidboot.hardware=s7
+
 BOARD_KERNEL_BASE := 0x20000000
-BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_PAGESIZE := 2048
 
 # EGL
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
@@ -49,13 +76,21 @@ BOARD_EGL_CFG := device/huawei/s7/prebuilt/system/lib/egl/egl.cfg
 TARGET_USES_GENLOCK := true
 USE_OPENGL_RENDERER := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
-COMMON_GLOBAL_CFLAGS += -DQCOM_NO_SECURE_PLAYBACK -DUSES_LEGACY_EGL
+#COMMON_GLOBAL_CFLAGS += -DQCOM_NO_SECURE_PLAYBACK -DUSES_LEGACY_EGL
+COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=60
+
 TARGET_FORCE_CPU_UPLOAD := true
-TARGET_NO_HW_VSYNC := true
+#TARGET_NO_HW_VSYNC := true
 
 # Audio
-TARGET_USE_SOFTWARE_AUDIO_AAC := true
-TARGET_PROVIDES_LIBAUDIO := true
+
+#TARGET_USE_SOFTWARE_AUDIO_AAC := true
+
+#BOARD_USES_AUDIO_LEGACY := true
+TARGET_PROVIDES_LIBAUDIO := false
+
+
+#TARGET_QCOM_HDMI_OUT := true
 
 # Filesystem
 #cat /proc/mtd
@@ -69,19 +104,19 @@ TARGET_PROVIDES_LIBAUDIO := true
 #mtd6: 000e0000 00020000 "splash"
 #mtd7: 00200000 00020000 "misc"
 
-BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
-BOARD_RECOVERYIMAGE_PARTITION_SIZE :=8388608 
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 348127232
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 1094713344
+BOARD_BOOTIMAGE_PARTITION_SIZE := 5242880
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 5242880
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 262144000
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 167772160
 BOARD_FLASH_BLOCK_SIZE := 131072
-TARGET_USERIMAGES_USE_EXT4 := true
+#TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_USES_MMCUTILS := true
 
 # Internal storage
 BOARD_HAS_SDCARD_INTERNAL := true
-BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk1p1
+BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk0p1
 BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk1k1
-BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
+BOARD_SDEXT_DEVICE := /dev/block/mmcblk0p2
 
 # Recovery
 TARGET_BOOTLOADER_BOARD_NAME := s7
@@ -97,7 +132,10 @@ BOARD_CUSTOM_GRAPHICS  := ../../../device/huawei/s7/recovery/graphics.c
 TARGET_RECOVERY_INITRC := device/huawei/s7/recovery.rc
 
 # USB sheezle
-BOARD_MASS_STORAGE_FILE_PATH := "/sys/devices/platform/usb_mass_storage/lun0/file"
+BOARD_UMS_LUNFILE := /sys/devices/platform/msm_hsusb/gadget/lun0/file
+BOARD_MASS_STORAGE_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun0/file
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun0/file
+#"/sys/devices/platform/usb_mass_storage/lun0/file"
 BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 
 # Input
@@ -113,22 +151,30 @@ ENABLE_WEBGL := true
 # QCOM Dependencies
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_QCOM_LIBS := true
-COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DQCOM_ICS_COMPAT -DICS_CAMERA_BLOB
+COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
+# -DQCOM_ICS_COMPAT
+#  -DBINDER_COMPAT
+#-DICS_CAMERA_BLOB
 BOARD_NEEDS_MEMORYHEAPPMEM := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
+#BOARD_HAVE_BLUETOOTH_BCM := true
 
 # GPS
-BOARD_GPS_LIBRARIES := libloc_api
+#BOARD_GPS_LIBRARIES := libloc_api
+#BOARD_GPS_NEEDS_XTRA := true
+#BOARD_USES_QCOM_GPS := true
+#BOARD_USES_QCOM_LIBRPC := true
+#BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := s7
+#BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
+
+BOARD_GPS_LIBRARIES = libloc
+BOARD_USES_GPSSHIM := true
 BOARD_GPS_NEEDS_XTRA := true
-BOARD_USES_QCOM_GPS := true
-BOARD_USES_QCOM_LIBRPC := true
-BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := s7
-BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 
 # Data
-BOARD_MOBILEDATA_INTERFACE_NAME := "pdp0"
+BOARD_MOBILEDATA_INTERFACE_NAME := "rmnet0"
 
 # Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := false
@@ -136,11 +182,46 @@ TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 TARGET_BOOTANIMATION_USE_RGB565 := true
 
 # Wifi related defines
+#BOARD_WPA_SUPPLICANT_DRIVER := WEXT
+#WPA_SUPPLICANT_VERSION      := VER_0_6_X
+#BOARD_WLAN_DEVICE           := bcm4329
+#WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
+#WIFI_DRIVER_FW_STA_PATH     := "/vendor/firmware/fw_bcm4329.bin"
+#WIFI_DRIVER_FW_AP_PATH      := "/vendor/firmware/fw_bcm4329_apsta.bin"
+#WIFI_DRIVER_MODULE_ARG      := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
+#WIFI_DRIVER_MODULE_NAME     := "bcm4329"
+
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 WPA_SUPPLICANT_VERSION      := VER_0_6_X
 BOARD_WLAN_DEVICE           := bcm4329
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
-WIFI_DRIVER_FW_STA_PATH     := "/vendor/firmware/fw_bcm4329.bin"
-WIFI_DRIVER_FW_AP_PATH      := "/vendor/firmware/fw_bcm4329_apsta.bin"
-WIFI_DRIVER_MODULE_ARG      := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
-WIFI_DRIVER_MODULE_NAME     := "bcm4329"
+WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/dhd.ko"
+WIFI_DRIVER_FW_STA_PATH     := "/system/etc/wifi/rtecdc-bcm4329.bin"
+WIFI_DRIVER_FW_AP_PATH      := "/system/etc/wifi/rtecdc-apsta-bcm4329.bin"
+WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4329.bin nvram_path=/system/etc/wifi/nvram-bcm4329.txt"
+WIFI_DRIVER_MODULE_NAME     := "dhd"
+# fix work on old kernel
+BOARD_WEXT_NO_COMBO_SCAN    := true
+
+#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
+BOARD_HOSTAPD_DRIVER        := WEXT
+#BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
+
+
+
+
+#BOARD_WPA_SUPPLICANT_DRIVER := WEXT
+#WPA_SUPPLICANT_VERSION      := VER_0_8_X
+#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
+#BOARD_HOSTAPD_DRIVER        := WEXT
+#BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
+#BOARD_WLAN_DEVICE := bcm4329
+#WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcm4329/parameters/firmware_path"
+#WIFI_DRIVER_MODULE_PATH     := "/system/modules/bcm4329.ko"
+#WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcm4329.bin"
+#WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcm4329_apsta.bin"
+#WIFI_DRIVER_MODULE_NAME     :=  "bcm4329"
+#WIFI_DRIVER_MODULE_ARG      :=  "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/system/etc/wifi/nvram-bcm4329.txt iface_name=wlan"
+
+
+
+

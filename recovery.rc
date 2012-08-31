@@ -1,5 +1,8 @@
 on early-init
     start ueventd
+    chown system system /sys/module/g_android/parameters/product_id
+    write /sys/module/g_android/parameters/product_id 3610
+    write /sys/class/leds/button-backlight/brightness 255
 
 on init
     export PATH /sbin:/system/sbin:/system/bin:/system/xbin

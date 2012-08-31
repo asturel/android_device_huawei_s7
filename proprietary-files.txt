@@ -1,2 +1,69 @@
-# ToDo
+## RIL related stuff
+bin/qmuxd
+lib/libauth.so
+lib/libcm.so
+lib/libdiag.so
+lib/libdll.so
+lib/libdsm.so
+lib/libdss.so
+lib/libgsdi_exp.so
+lib/libgstk_exp.so
+lib/libmmgsdilib.so
+lib/libnv.so
+lib/liboncrpc.so
+lib/libpbmlib.so
+lib/libqmi.so
+lib/libqueue.so
+lib/libril-qc-1.so
+lib/libril-qcril-hook-oem.so
+lib/libwms.so
+lib/libwmsts.so
 
+
+# key
+#usr/idc/t1320.idc
+#usr/keychars/s7_keypad.kcm.bin
+#usr/keylayout/s7_handset.kl
+#usr/keylayout/s7_keypad.kl
+
+# wifi
+etc/wifi/rtecdc-bcm4319.bin
+etc/wifi/nvram_mfgtest-bcm4319.txt
+etc/wifi/rtecdc-mfgtest-bcm4329.bin
+etc/wifi/nvram_mfgtest-bcm4329.txt
+etc/wifi/nvram-bcm4329.txt
+etc/wifi/rtecdc-apsta-bcm4329.bin
+etc/wifi/rtecdc-bcm4329.bin
+etc/wifi/rtecdc-apsta-bcm4319.bin
+etc/wifi/nvram-bcm4319.txt
+etc/wifi/rtecdc-mfgtest-bcm4319.bin
+
+# EGL
+
+etc/firmware/yamato_pm4.fw
+etc/firmware/yamato_pfp.fw
+lib/libsc-a2xx.so
+lib/libgsl.so
+lib/libC2D2.so
+lib/egl/libGLESv2_adreno200.so
+lib/egl/eglsubAndroid.so
+lib/egl/libq3dtools_adreno200.so
+lib/egl/libGLESv1_CM_adreno200.so
+lib/egl/libGLES_android.so.old
+lib/egl/libEGL_adreno200.so
+lib/egl/egl.cfg
+lib/libOpenVG.so
+
+
+# module
+#lib/modules/dhd.ko
+
+
+
+## GPS
+lib/libloc.so
+lib/libloc-rpc.so
+lib/libcommondefs.so
+
+## Other libraries and proprietary binaries
+bin/akmd2
