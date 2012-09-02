@@ -20,18 +20,8 @@ $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
 #$(call inherit-product-if-exists, vendor/gapps/gapps.mk)
 
-
-
-#PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
-#PRODUCT_AAPT_PREF_CONFIG := xhdpi
-
-#PRODUCT_LOCALES += xhdpi
-
-PRODUCT_AAPT_CONFIG := large ldpi mdpi
-#PRODUCT_AAPT_PREF_CONFIG := ldpi
-#PRODUCT_LOCALES += ldpi mdpi
+PRODUCT_AAPT_CONFIG := large ldpi mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
-PRODUCT_LOCALES += mdpi hdpi
 
 
 DEVICE_PACKAGE_OVERLAYS := device/huawei/s7/overlay
@@ -161,6 +151,15 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/nv.bin:system/etc/nv.bin
 
 
+xPRODUCT_COPY_FILES += \
+    device/huawei/s7/prebuilt/system/wifi/dhd.ko:system/lib/modules/dhd.ko \
+    device/huawei/s7/prebuilt/system/wifi/firmware.bin:system/wifi/firmware.bin \
+    device/huawei/s7/prebuilt/system/wifi/firmware_apsta.bin:system/wifi/firmware_apsta.bin \
+    device/huawei/s7/prebuilt/system/wifi/firmware_test.bin:system/wifi/firmware_test.bin \
+    device/huawei/s7/prebuilt/system/wifi/nvram.txt:system/wifi/nvram.txt
+
+
+
 
 # layout
 PRODUCT_COPY_FILES += \
@@ -227,12 +226,12 @@ PRODUCT_COPY_FILES += \
 
 
 #camera
-xPRODUCT_COPY_FILES += \
+PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libmmipl.so:system/lib/libmmipl.so \
     device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
-    device/huawei/s7/prebuilt/system/lib/libcamera-s7.so:system/lib/libcamera-s7.so \
+    device/huawei/s7/prebuilt/system/lib/libcamera-s7.so:system/lib/libcamera.so \
     device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
-    device/huawei/s7/prebuilt/system/lib/libcamera-s7.so:obj/lib/libcamera-s7.so
+    device/huawei/s7/prebuilt/system/lib/libcamera-s7.so:obj/lib/libcamera.so
 
 
 #    device/huawei/s7/prebuilt/system/lib/:system/lib/ \
@@ -289,8 +288,8 @@ PRODUCT_PACKAGES += \
 #PRODUCT_PACKAGES += \
 #    camera.qsd8k
 
-#PRODUCT_PACKAGES += \
-#    camera.s7
+PRODUCT_PACKAGES += \
+    camera.s7
 
 #PRODUCT_PACKAGES += \
 #        camera.msm7x27
@@ -310,7 +309,9 @@ PRODUCT_PACKAGES += \
 
 
 PRODUCT_PACKAGES += \
-        dexpreopt
+        dexpreopt \
+	huawei_brcm_patchram_plus
+
 
 
 DISABLE_DEXPREOPT := false

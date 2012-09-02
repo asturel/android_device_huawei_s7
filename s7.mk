@@ -28,11 +28,23 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)
 $(call inherit-product, device/huawei/s7/device.mk)
 
 # Set those variables here to overwrite the inherited values.
+
 PRODUCT_NAME := s7
 PRODUCT_DEVICE := s7
-PRODUCT_BRAND := Huawei
-PRODUCT_MANUFACTURER := Huawei
+PRODUCT_BRAND := HUAWEI
 PRODUCT_MODEL := S7
+PRODUCT_MANUFACTURER := HUAWEI
+#PRODUCT_BUILD_PROP_OVERRIDES += BUILD_FINGERPRINT=google/soju/crespo:4.0.4/IMM76D/299849:user/release-keys PRIVATE_BUILD_DESC="soju-user 4.0.4 IMM76D 299849 release-keys"
 
-CM_BUILDTYPE := EXPERIMENTAL
-CM_EXTRAVERSION := asturel
+
+
+#PRODUCT_NAME := cm_s7
+#PRODUCT_DEVICE := s7
+#PRODUCT_BRAND := huawei
+#PRODUCT_MODEL := IDEOS S7 Slim
+#PRODUCT_MANUFACTURER := HUAWEI
+
+
+#PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_MODEL="IDEOS S7 Slim" PRODUCT_MANUFACTURER=HUAWEI PRODUCT_NAME=SLIM_HW_SE TARGET_DEVICE=qsd8k_slim BUILD_FINGERPRINT=Huawei/SLIM_HW_SE/qsd8k_slim/slim:2.2.2/FRG83G/hid.20110919.193625:user/release-keys PRIVATE_BUILD_DESC="SLIM_HW_SE-user 2.2.2 FRG83G hid.20110919.193625 release-keys"
+#PRODUCT_BUILD_PROP_OVERRIDES += BUILD_FINGERPRINT=google/soju/crespo:4.0.4/IMM76D/299849:user/release-keys PRIVATE_BUILD_DESC="soju-user 4.0.4 IMM76D 299849 release-keys"
+

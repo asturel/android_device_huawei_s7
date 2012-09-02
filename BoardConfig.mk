@@ -23,6 +23,19 @@
 # WARNING: This line must come *before* including the proprietary
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
+USE_CAMERA_STUB := true
+
+
+
+BOARD_USE_FROYO_LIBCAMERA := true
+COMMON_GLOBAL_CFLAGS += -DBINDER_COMPAT
+
+
+
+BOARD_PROVIDES_LIBRIL := true
+
+TARGET_NO_HW_VSYNC := true
+
 
 
 #BUILD_LIBCAMERA := true
@@ -46,7 +59,10 @@ TARGET_PREBUILT_KERNEL := device/huawei/s7/kernel_legujabb
 BOARD_USE_LEGACY_TOUCHSCREEN := true
 
 # hdmi
-TARGET_USES_OVERLAY := false
+#TARGET_USES_OVERLAY := false
+
+TARGET_QCOM_HDMI_OUT := true
+
 
 
 # Board properties
@@ -77,7 +93,7 @@ TARGET_USES_GENLOCK := true
 USE_OPENGL_RENDERER := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
 #COMMON_GLOBAL_CFLAGS += -DQCOM_NO_SECURE_PLAYBACK -DUSES_LEGACY_EGL
-COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=60
+COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=60 -DQCOM_HARDWARE  -DUSES_LEGACY_EGL
 
 TARGET_FORCE_CPU_UPLOAD := true
 #TARGET_NO_HW_VSYNC := true
@@ -86,7 +102,6 @@ TARGET_FORCE_CPU_UPLOAD := true
 
 #TARGET_USE_SOFTWARE_AUDIO_AAC := true
 
-#BOARD_USES_AUDIO_LEGACY := true
 TARGET_PROVIDES_LIBAUDIO := false
 
 
@@ -159,7 +174,7 @@ BOARD_NEEDS_MEMORYHEAPPMEM := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
-#BOARD_HAVE_BLUETOOTH_BCM := true
+BOARD_HAVE_BLUETOOTH_BCM := true
 
 # GPS
 #BOARD_GPS_LIBRARIES := libloc_api
@@ -182,14 +197,7 @@ TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 TARGET_BOOTANIMATION_USE_RGB565 := true
 
 # Wifi related defines
-#BOARD_WPA_SUPPLICANT_DRIVER := WEXT
-#WPA_SUPPLICANT_VERSION      := VER_0_6_X
-#BOARD_WLAN_DEVICE           := bcm4329
-#WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
-#WIFI_DRIVER_FW_STA_PATH     := "/vendor/firmware/fw_bcm4329.bin"
-#WIFI_DRIVER_FW_AP_PATH      := "/vendor/firmware/fw_bcm4329_apsta.bin"
-#WIFI_DRIVER_MODULE_ARG      := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
-#WIFI_DRIVER_MODULE_NAME     := "bcm4329"
+
 
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 WPA_SUPPLICANT_VERSION      := VER_0_6_X
@@ -199,29 +207,14 @@ WIFI_DRIVER_FW_STA_PATH     := "/system/etc/wifi/rtecdc-bcm4329.bin"
 WIFI_DRIVER_FW_AP_PATH      := "/system/etc/wifi/rtecdc-apsta-bcm4329.bin"
 WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4329.bin nvram_path=/system/etc/wifi/nvram-bcm4329.txt"
 WIFI_DRIVER_MODULE_NAME     := "dhd"
+
 # fix work on old kernel
 BOARD_WEXT_NO_COMBO_SCAN    := true
 
 #BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
+
 BOARD_HOSTAPD_DRIVER        := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
-
-
-
-
-#BOARD_WPA_SUPPLICANT_DRIVER := WEXT
-#WPA_SUPPLICANT_VERSION      := VER_0_8_X
-#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
-#BOARD_HOSTAPD_DRIVER        := WEXT
-#BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
-#BOARD_WLAN_DEVICE := bcm4329
-#WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcm4329/parameters/firmware_path"
-#WIFI_DRIVER_MODULE_PATH     := "/system/modules/bcm4329.ko"
-#WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcm4329.bin"
-#WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcm4329_apsta.bin"
-#WIFI_DRIVER_MODULE_NAME     :=  "bcm4329"
-#WIFI_DRIVER_MODULE_ARG      :=  "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/system/etc/wifi/nvram-bcm4329.txt iface_name=wlan"
-
 
 
 

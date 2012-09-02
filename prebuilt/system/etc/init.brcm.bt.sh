@@ -52,8 +52,8 @@ failed ()
 start_hciattach ()
 {
   echo 1 > $BLUETOOTH_SLEEP_PATH
-#  /system/bin/brcm_patchram_plus -d --enable_hci --enable_lpm --pcm 1 --baudrate 3000000 --patchram $BLUETOOTH_HCD_PATH /dev/ttyHS0 &
-  /system/bin/brcm_patchram_plus -d --enable_hci --enable_lpm  --baudrate 3000000 --patchram $BLUETOOTH_HCD_PATH /dev/ttyHS0 &
+  /system/bin/brcm_patchram_plus -d --enable_hci --enable_lpm --pcm 1 --baudrate 3000000 --patchram $BLUETOOTH_HCD_PATH /dev/ttyHS0 &
+#  /system/bin/brcm_patchram_plus -d --enable_hci --enable_lpm  --baudrate 3000000 --patchram $BLUETOOTH_HCD_PATH /dev/ttyHS0 &
 
   hciattach_pid=$!
   loge "start_hciattach: pid = $hciattach_pid"
