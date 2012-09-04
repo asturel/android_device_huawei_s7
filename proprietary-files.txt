@@ -69,9 +69,3 @@ lib/libcommondefs.so
 bin/akmd2
 
 
-
-
-wifi/firmware.bin
-wifi/firmware_apsta.bin
-wifi/firmware_test.bin
-wifi/nvram.txt

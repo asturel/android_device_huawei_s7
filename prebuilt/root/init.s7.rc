@@ -26,6 +26,8 @@ on fs
     mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev barrier=1 noauto_da_alloc data=journal
 
 on boot
+    chmod 0777 /sys/class/graphics/fb0/state
+    write /sys/class/graphics/fb0/state 1
 
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
