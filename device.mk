@@ -144,7 +144,7 @@ xPRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/usr/idc/t1320.idc:system/usr/idc/t1320.idc \
     device/huawei/s7/prebuilt/system/usr/idc/t1320.idc:system/usr/idc/msm_touchscreen.idc \
-    device/huawei/s7/prebuilt/system/usr/idc/t1320.idc:system/usr/idc/mxt224.idc \
+    device/huawei/s7/prebuilt/system/usr/idc/t1320.idc:system/usr/idc/mxt224_touchscreen.idc \
     device/huawei/s7/prebuilt/system/usr/keychars/s7_keypad.kcm.bin:system/usr/keychars/s7_keypad.kcm.bin \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/s7_handset.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_keypad.kl:system/usr/keylayout/s7_keypad.kl \
@@ -206,12 +206,12 @@ PRODUCT_COPY_FILES += \
 
 
 # Camera
-PRODUCT_COPY_FILES += \
-    device/huawei/s7/prebuilt/system/lib/libmmipl.so:system/lib/libmmipl.so \
-    device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
-    device/huawei/s7/prebuilt/system/lib/libcamera.so:system/lib/libcamera.so \
-    device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
-    device/huawei/s7/prebuilt/system/lib/libcamera.so:obj/lib/libcamera.so
+#PRODUCT_COPY_FILES += \
+#    device/huawei/s7/prebuilt/system/lib/libmmipl.so:system/lib/libmmipl.so \
+#    device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
+#    device/huawei/s7/prebuilt/system/lib/libcamera.so:system/lib/libcamera.so \
+#    device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
+#    device/huawei/s7/prebuilt/system/lib/libcamera.so:obj/lib/libcamera.so
 
 
 # Live wallpaper packages
@@ -259,11 +259,8 @@ PRODUCT_PACKAGES += \
 #PRODUCT_PACKAGES += \
 #    camera.qsd8k
 
-PRODUCT_PACKAGES += \
-    camera.s7
-
 #PRODUCT_PACKAGES += \
-#    camera.msm7x27
+#    camera.s7
 
 
 # GPS
