@@ -46,7 +46,7 @@ BOARD_USE_LEGACY_TOUCHSCREEN := true
 
 # hdmi
 TARGET_USES_OVERLAY := false
-TARGET_QCOM_HDMI_OUT := false
+TARGET_QCOM_HDMI_OUT := true
 
 
 
@@ -187,5 +187,7 @@ BOARD_WEXT_NO_COMBO_SCAN    := true
 BOARD_HOSTAPD_DRIVER        := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
 
-
-
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    service.adb.enable=1 \
+    sys.usb.config=adb
