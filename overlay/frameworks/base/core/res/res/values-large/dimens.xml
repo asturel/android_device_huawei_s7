@@ -18,7 +18,7 @@
 -->
 <resources>
     <!-- Height of the status bar -->
-    <dimen name="status_bar_height">36dip</dimen>
+    <dimen name="status_bar_height">28dip</dimen>
     <!-- Width and height of a single notification icon in the status bar -->
     <dimen name="status_bar_icon_size">32dip</dimen>
     <!-- Size of the giant number (unread count) in the notifications -->
@@ -43,4 +43,21 @@
 
     <!-- Preference UI dimensions for larger screens. -->
     <dimen name="preference_widget_width">56dp</dimen>
+
+
+    <!-- Size of clock font in LockScreen. -->
+    <dimen name="keyguard_pattern_unlock_clock_font_size">112sp</dimen>
+
+    <!-- Size of lockscreen outerring on unsecure unlock LockScreen -->
+    <dimen name="keyguard_lockscreen_outerring_diameter">270dp</dimen> <!-- 364 -->
+
+    <!-- target placement radius for MultiWaveView -->
+<!--    <dimen name="multiwaveview_target_placement_radius">182dip</dimen> -->
+    <dimen name="multiwaveview_target_placement_radius">135dip</dimen>
+
+
+    <!-- Size of status line font in LockScreen. -->
+    <dimen name="keyguard_pattern_unlock_status_line_font_size">14sp</dimen>
+
+
 </resources>
