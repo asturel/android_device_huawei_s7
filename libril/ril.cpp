@@ -19,6 +19,7 @@
 
 #include <hardware_legacy/power.h>
 
+//#include <telephony/ril.h>
 #include "ril.h"
 #include <telephony/ril_cdma_sms.h>
 #include <cutils/sockets.h>
@@ -87,17 +88,17 @@ namespace android {
 #define PRINTBUF_SIZE 8096
 
 // Enable RILC log
-#define RILC_LOG 0
+#define RILC_LOG 1
 
 #if RILC_LOG
     #define startRequest           sprintf(printBuf, "(")
     #define closeRequest           sprintf(printBuf, "%s)", printBuf)
     #define printRequest(token, req)           \
-            LOGD("[%04d]> %s %s", token, requestToString(req), printBuf)
+            ALOGD("[%04d]> %s %s", token, requestToString(req), printBuf)
 
     #define startResponse           sprintf(printBuf, "%s {", printBuf)
     #define closeResponse           sprintf(printBuf, "%s}", printBuf)
-    #define printResponse           LOGD("%s", printBuf)
+    #define printResponse           ALOGD("%s", printBuf)
 
     #define clearPrintBuf           printBuf[0] = 0
     #define removeLastChar          printBuf[strlen(printBuf)-1] = 0
@@ -490,7 +491,14 @@ dispatchInts (Parcel &p, RequestInfo *pRI) {
         int32_t t;
 
         status = p.readInt32(&t);
-        pInts[i] = (int)t;
+        /* libril-qc apparently only supports SERVICE_NONE here */
+        if (pRI->pCI->requestNumber == RIL_REQUEST_QUERY_CALL_WAITING)
+            pInts[i] = 0;
+        else if (pRI->pCI->requestNumber == RIL_REQUEST_SET_CALL_WAITING &&
+                    i == 1)
+            pInts[i] = 0;
+        else
+            pInts[i] = (int)t;
         appendPrintBuf("%s%d,", printBuf, t);
 
         if (status != NO_ERROR) {
@@ -1496,9 +1504,12 @@ static int responseDataCallList(Parcel &p, void *response, size_t responselen)
             (char*)p_cur[i].type,
             (char*)p_cur[i].apn,
             (char*)p_cur[i].address);
+//	if(p_cur[i].active && *((char*)p_cur[i].type)=='I')
+//		system("netcfg rmnet0 dhcp");
     }
     removeLastChar;
     closeResponse;
+
 
     return 0;
 }
@@ -2558,7 +2569,7 @@ RIL_register (const RIL_RadioFunctions *callbacks) {
                 && (callbacks->version != 2))) { // Remove when partners upgrade to version 3
         ALOGE(
             "RIL_register: RIL_RadioFunctions * null or invalid version"
-            " (expected %d)", RIL_VERSION);
+            " (expected %d, was %d)", RIL_VERSION, callbacks->version);
         return;
     }
     if (callbacks->version < 3) {
@@ -2650,6 +2661,7 @@ RIL_register (const RIL_RadioFunctions *callbacks) {
 
     rilEventAddWakeup (&s_debug_event);
 #endif
+
 }
 
 static int
@@ -2702,13 +2714,6 @@ RIL_onRequestComplete(RIL_Token t, RIL_Errno e, void *response, size_t responsel
 
     appendPrintBuf("[%04d]< %s",
         pRI->token, requestToString(pRI->pCI->requestNumber));
-
-    if (pRI->pCI->requestNumber == RIL_REQUEST_BASEBAND_VERSION) {
-        char baseband[PROPERTY_VALUE_MAX];
-
-        property_get("ro.build.baseband_version", baseband, "QCT unknown");
-        response=strdup(baseband);
-    }
 
     if (pRI->cancelled == 0) {
         Parcel p;
@@ -2837,6 +2842,19 @@ void RIL_onUnsolicitedResponse(int unsolResponse, void *data,
             p.writeInt32(s_callbacks.onStateRequest());
             appendPrintBuf("%s {%s}", printBuf,
                 radioStateToString(s_callbacks.onStateRequest()));
+            if(s_callbacks.onStateRequest()==RADIO_STATE_SIM_LOCKED_OR_ABSENT) {
+                int data;
+                ALOGI("SIM_LOCKED_OR_ABSENT: Reset Radio....");
+                data = 0;
+                issueLocalRequest(RIL_REQUEST_RADIO_POWER, &data, sizeof(int));
+                issueLocalRequest(RIL_REQUEST_RESET_RADIO, NULL, 0);
+                sleep(2);
+                data = 1;
+                issueLocalRequest(RIL_REQUEST_RADIO_POWER, &data, sizeof(int));
+                issueLocalRequest(RIL_REQUEST_SET_NETWORK_SELECTION_AUTOMATIC, NULL, 0);
+                RIL_onUnsolicitedResponse(RIL_UNSOL_RESPONSE_NETWORK_STATE_CHANGED,
+                                      NULL, 0);
+            }
         break;
 
 

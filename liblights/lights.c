@@ -43,7 +43,7 @@ static int g_backlight = 255;
 static int g_trackball = -1;
 static int g_buttons = 0;
 static int g_attention = 0;
-static int g_haveAmberLed = 1;
+static int g_haveAmberLed = 0;
 
 char const*const TRACKBALL_FILE
         = "/sys/class/leds/jogball-backlight/brightness";
@@ -410,7 +410,7 @@ static struct hw_module_methods_t lights_module_methods = {
 /*
  * The lights Module
  */
-const struct hw_module_t HAL_MODULE_INFO_SYM = {
+struct hw_module_t HAL_MODULE_INFO_SYM = {
     .tag = HARDWARE_MODULE_TAG,
     .version_major = 1,
     .version_minor = 0,

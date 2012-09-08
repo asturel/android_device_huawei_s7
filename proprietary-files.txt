@@ -67,3 +67,5 @@ lib/libcommondefs.so
 
 ## Other libraries and proprietary binaries
 bin/akmd2
+
+
