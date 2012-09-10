@@ -107,10 +107,18 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
                 device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES;
                 if (device) break;
             }
+	    /*
             device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_EARPIECE;
             if (device == 0) {
                 ALOGE ("getDeviceForStrategy() earpiece device not found");
             }
+	    */
+
+            device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER;
+            if (device == 0) {
+                ALOGE ("getDeviceForStrategy() speaker device not found");
+            }
+
             break;
 
         case AudioSystem::FORCE_SPEAKER:
@@ -139,7 +147,6 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
     break;
 
     case STRATEGY_SONIFICATION:
-
         // If incall, just select the STRATEGY_PHONE device: The rest of the behavior is handled by
         // handleIncallSonification().
         if (mPhoneState == AudioSystem::MODE_IN_CALL) {
@@ -223,6 +230,34 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
             ALOGV("getDeviceForStrategy() incompatible media and phone devices");
         }
         } break;
+
+    case STRATEGY_ENFORCED_AUDIBLE:
+        // strategy STRATEGY_ENFORCED_AUDIBLE uses same routing policy as STRATEGY_SONIFICATION
+        // except:
+        //   - when in call where it doesn't default to STRATEGY_PHONE behavior
+        //   - in countries where not enforced in which case it follows STRATEGY_MEDIA
+
+        if (strategy == STRATEGY_SONIFICATION ||
+                !mStreams[AUDIO_STREAM_ENFORCED_AUDIBLE].mCanBeMuted) {
+            device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER;
+            if (device == 0) {
+                ALOGE("getDeviceForStrategy() speaker device not found for STRATEGY_SONIFICATION");
+            }
+        }
+    case STRATEGY_SONIFICATION_RESPECTFUL:
+        if (isInCall()) {
+            device = getDeviceForStrategy(STRATEGY_SONIFICATION, false /*fromCache*/);
+        } else if (isStreamActive(AudioSystem::MUSIC, SONIFICATION_RESPECTFUL_AFTER_MUSIC_DELAY)) {
+            // while media is playing (or has recently played), use the same device
+            device = getDeviceForStrategy(STRATEGY_MEDIA, false /*fromCache*/);
+        } else {
+            // when media is not playing anymore, fall back on the sonification behavior
+            device = getDeviceForStrategy(STRATEGY_SONIFICATION, false /*fromCache*/);
+        }
+
+        break;
+
+
 
     default:
         ALOGW("getDeviceForStrategy() unknown strategy: %d", strategy);

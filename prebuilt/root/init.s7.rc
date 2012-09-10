@@ -25,7 +25,7 @@ on init
 on fs
     devwait /dev/block/mmcblk0p2
     exec /system/bin/e2fsck -p /dev/block/mmcblk0p2
-    mount ext4 /dev/block/mmcblk0p2 /data2 nosuid nodev barrier=1 noauto_da_alloc data=journal
+    mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev barrier=1 noauto_da_alloc data=journal
 
 on boot
 #    chmod 0777 /sys/class/graphics/fb0/state
@@ -115,8 +115,8 @@ on boot
 
 service qmuxd /system/bin/qmuxd
     class main
-    user radio
-    group radio
+    user root
+    chmod 0777 /data/radio/qmux_connect_socket
 
 on property:init.svc.bluetoothd=running
     write /sys/devices/virtual/bluetooth/hci0/idle_timeout 7000
