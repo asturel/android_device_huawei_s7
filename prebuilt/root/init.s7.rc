@@ -18,6 +18,8 @@ on property:dev.bootcomplete=1
 
 on init
     mkdir /data2 0771 system system
+    chmod 0777 /sys/class/graphics/fb0/state
+    write /sys/class/graphics/fb0/state 1
 
 
 on fs
@@ -26,8 +28,8 @@ on fs
     mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev barrier=1 noauto_da_alloc data=journal
 
 on boot
-    chmod 0777 /sys/class/graphics/fb0/state
-    write /sys/class/graphics/fb0/state 1
+#    chmod 0777 /sys/class/graphics/fb0/state
+#    write /sys/class/graphics/fb0/state 1
 
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -166,17 +168,17 @@ service akmd /system/bin/akmd2
 #    oneshot
 # end: comment out by h00131430 for BCM432x
 
-service brcmpatch /system/bin/log -t brcm-bluetooth -p i "brcm_patchram_plus service requested"
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
+#service brcmpatch /system/bin/log -t brcm-bluetooth -p i "brcm_patchram_plus service requested"
+#    user bluetooth
+#    group bluetooth net_bt_admin
+#    disabled
+#    oneshot
 
 #service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p1
 #    user root
 #    disabled
 
-service hciattach /system/bin/sh /system/etc/init.bt.sh
+service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
     user bluetooth
     group qcom_oncrpc bluetooth net_bt_admin
     disabled

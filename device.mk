@@ -306,6 +306,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/init.bt.sh:system/etc/init.bt.sh \
     device/huawei/s7/prebuilt/system/etc/init.brcm.bt.sh:system/etc/init.brcm.bt.sh \
     device/huawei/s7/prebuilt/system/bin/hci_qcomm_init:system/bin/hci_qcomm_init \
+    device/huawei/s7/prebuilt/system/bin/hciattach:system/bin/hciattach \
     device/huawei/s7/prebuilt/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
     system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
     device/huawei/s7/prebuilt/system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd:system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd
