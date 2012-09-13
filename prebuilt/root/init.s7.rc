@@ -188,20 +188,9 @@ service akmd /system/bin/akmd2
 #    user root
 #    disabled
 
-#service hciattach /system/bin/sh /system/etc/init.bt.sh
-#    user bluetooth
-#    group qcom_oncrpc bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
-service hciattach echo 1 > /proc/bluetooth/sleep/proto && /system/bin/brcm_patchram_plus \
-    -d --enable_hci --enable_lpm --pcm 1 --baudrate 3000000 \
-    --patchram /system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd  \
-      /dev/ttyHS0 &
-
-    class main
+service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
     user bluetooth
-    group qcom_oncrpc bluetooth net_bt_admin system
+    group qcom_oncrpc bluetooth net_bt_admin
     disabled
     oneshot
 
