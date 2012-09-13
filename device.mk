@@ -277,8 +277,7 @@ PRODUCT_PACKAGES += \
 
 
 PRODUCT_PACKAGES += \
-    dexpreopt \
-    huawei_brcm_patchram_plus
+    dexpreopt
 
 
 
