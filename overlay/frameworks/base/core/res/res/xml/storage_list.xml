@@ -39,6 +39,6 @@
     		 android:storageDescription="@string/storage_usb"
     		 android:primary="true" />
 -->
-    <storage android:mountPoint="/mnt/sdcard2" android:storageDescription="@string/storage_usb" android:primary="false" android:removable="true" android:allowMassStorage="true" />
-    <storage android:mountPoint="/mnt/sdcard" android:storageDescription="@string/storage_internal" android:primary="true" android:removable="false" android:allowMassStorage="true" />
+    <storage android:mountPoint="/storage/sdcard1" android:storageDescription="@string/storage_usb" android:primary="false" android:removable="true" android:allowMassStorage="true" />
+    <storage android:mountPoint="/storage/sdcard0" android:storageDescription="@string/storage_internal" android:primary="true" android:removable="false" android:allowMassStorage="true" />
 </StorageList>
