@@ -179,7 +179,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
     case STRATEGY_MEDIA: {
         uint32_t device2 = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_AUX_DIGITAL;
 #ifdef WITH_A2DP
-        if (mA2dpOutput != 0) {
+	if (mHasA2dp && (mForceUse[AudioSystem::FOR_MEDIA] != AudioSystem::FORCE_NO_BT_A2DP) && (getA2dpOutput() != 0) && !mA2dpSuspended) {
             if (device2 == 0) {
                 // play ringtone over speaker (or speaker + headset) if in car dock
                 // because A2DP is suspended in this case
