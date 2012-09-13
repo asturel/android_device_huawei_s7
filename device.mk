@@ -232,16 +232,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libgenlock \
     gralloc.qsd8k \
-    hwcomposer.qsd8k \
     copybit.qsd8k \
-    libQcomUI \
+    hwcomposer.qsd8k
 
 
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.s7 \
     audio_policy.s7 \
-    audio.a2dp.default \
     libaudioutils
 
 # OMX

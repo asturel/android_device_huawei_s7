@@ -75,7 +75,7 @@ on boot
 # For qmuxd socket
     mkdir /data/radio 0770 radio radio
     chown radio radio 0770 /data/radio
-
+    chmod 0777 /data/radio/qmux_connect_socket
 
 
 # Create directories for wiper services
@@ -116,6 +116,8 @@ on boot
 service qmuxd /system/bin/qmuxd
     class main
     user root
+
+on property:init.svc.ril-daemon=running
     chmod 0777 /data/radio/qmux_connect_socket
 
 on property:init.svc.bluetoothd=running

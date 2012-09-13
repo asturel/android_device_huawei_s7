@@ -89,11 +89,11 @@
         <item>0</item>
     </integer-array>
 
-<!--
-    <string name="config_networkLocationProvider">com.google.android.location.NetworkLocationProvider</string>
 
-    <string name="config_geocodeProvider">com.google.android.location.GeocodeProvider</string>
--->
+    <string name="config_networkLocationProviderPackageName">com.google.android.location.NetworkLocationProvider</string>
+
+    <string name="config_geocodeProviderPackageName">com.google.android.location.GeocodeProvider</string>
+
     <bool name="config_bluetooth_adapter_quick_switch">false</bool>
 
     <string name="config_legacyUmsLunFile">/sys/devices/platform/msm_hsusb/gadget/lun0/file</string>
@@ -110,5 +110,7 @@
 
     <integer name="config_longPressOnPowerBehavior">1</integer>
     <integer name="config_longPressOnHomeBehavior">2</integer>
+
+
 
 </resources>
