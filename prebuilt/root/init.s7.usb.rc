@@ -1,3 +1,54 @@
-#on early-init
-#    chown system system /sys/module/g_android/parameters/product_id
-#    write /sys/module/g_android/parameters/product_id 3610
+on init
+    chown system system /sys/module/g_android/parameters/product_id
+    write /sys/module/g_android/parameters/product_id 3610
+
+
+on boot
+   start start_usb0
+
+on property:sys.usb.config=adb
+    write /sys/module/g_android/parameters/product_id 3610
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=mass_storage,adb
+    write /sys/module/g_android/parameters/product_id 3610
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=mass_storage
+    write /sys/module/g_android/parameters/product_id 361E
+    setprop sys.usb.state $sys.usb.config
+
+#on property:sys.usb.config=mtp
+#    setprop sys.usb.state $sys.usb.config
+
+#on property:sys.usb.config=mtp,adb
+#    start adbd
+#    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=rndis
+    write /sys/module/g_android/parameters/product_id 3627
+    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=rndis,adb
+    write /sys/module/g_android/parameters/product_id 3617
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=mass_storage,rndis,adb
+    write /sys/module/g_android/parameters/product_id 3616
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+
+
+#on property:sys.usb.config=ptp
+#    setprop sys.usb.state $sys.usb.config
+
+#on property:sys.usb.config=ptp,adb
+#    start adbd
+#    setprop sys.usb.state $sys.usb.config
+
+#on property:sys.usb.config=rndis,dm
+#    setprop sys.usb.state $sys.usb.config
