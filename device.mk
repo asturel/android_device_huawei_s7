@@ -148,7 +148,10 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/usr/keychars/s7_keypad.kcm.bin:system/usr/keychars/s7_keypad.kcm.bin \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/s7_handset.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_keypad.kl:system/usr/keylayout/s7_keypad.kl \
-    device/huawei/s7/prebuilt/system/usr/keylayout/Generic.kl:system/usr/keylayout/Generic.kl
+    device/huawei/s7/prebuilt/system/usr/keylayout/Generic.kl:system/usr/keylayout/Generic.kl \
+    device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/t1320.kl \
+    device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/msm_touchscreen.kl \
+    device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/mxt224_touchscreen.kl
 
 
 
@@ -272,8 +275,7 @@ PRODUCT_PACKAGES += \
 
 
 PRODUCT_PACKAGES += \
-    dexpreopt \
-    huawei_brcm_patchram_plus
+    dexpreopt
 
 
 
@@ -295,8 +297,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     device/huawei/s7/prebuilt/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
     device/huawei/s7/prebuilt/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
-    device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh
-
+    device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh \
+    device/huawei/s7/prebuilt/system/bin/usbmountd:/system/bin/usbmountd
 
 
 # Bluetooth configuration files
