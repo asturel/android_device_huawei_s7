@@ -5,7 +5,7 @@ TARGET_SCREEN_WIDTH := 480
 $(call inherit-product, device/huawei/s7/s7.mk)
 
 # Inherit some common CM9 stuff.
-$(call inherit-product-if-exists, vendor/cm/config/common_full_phone.mk)
+$(call inherit-product-if-exists, vendor/cm/config/common_mini_phone.mk)
 
 # Inherit some common CM stuff.
 $(call inherit-product-if-exists, vendor/cm/config/gsm.mk)
@@ -19,3 +19,6 @@ DATE     := $(shell date +%Y%m%d)
 
 CM_BUILDTYPE := EXPERIMENTAL
 CM_EXTRAVERSION := asturel
+
+#PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=yakju BUILD_FINGERPRINT="google/yakju/maguro:4.1.1/JRO03C/398337:user/release-keys" PRIVATE_BUILD_DESC="yakju-user 4.1.1 JRO03C 398337 release-keys"
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=SLIM_HW_SE
