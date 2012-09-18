@@ -31,7 +31,7 @@ $(call inherit-product, device/huawei/s7/device.mk)
 
 PRODUCT_NAME := s7
 PRODUCT_DEVICE := s7
-PRODUCT_BRAND := HUAWEI
+PRODUCT_BRAND := Huawei
 PRODUCT_MODEL := S7
 PRODUCT_MANUFACTURER := HUAWEI
 #PRODUCT_BUILD_PROP_OVERRIDES += BUILD_FINGERPRINT=google/soju/crespo:4.0.4/IMM76D/299849:user/release-keys PRIVATE_BUILD_DESC="soju-user 4.0.4 IMM76D 299849 release-keys"
