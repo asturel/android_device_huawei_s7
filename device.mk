@@ -321,6 +321,12 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/kernel:kernel
 
 
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.goo.developerid=asturel \
+    ro.goo.board=$(TARGET_PRODUCT) \
+    ro.goo.rom=CM10s7 \
+    ro.goo.version=$(shell date +%s)
+
 #$(call inherit-product, vendor/qcom/proprietary/qcom-vendor.mk)
 
 
