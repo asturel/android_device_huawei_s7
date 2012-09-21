@@ -15,6 +15,10 @@ on early-init
         symlink /storage/sdcard1 /mnt/sdcard1
         symlink /storage/sdcard1 /sdcard1
 
+	mkdir /storage/pendrive 0777 system system
+        symlink /storage/pendrive /mnt/pendrive
+        symlink /storage/pendrive /pendrive
+
 
 
 service dhcp-service /system/bin/netcfg wlan0 dhcp
@@ -37,6 +41,8 @@ on fs
     mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev barrier=1 noauto_da_alloc data=journal
 
 on boot
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 998400
+
 #    chmod 0777 /sys/class/graphics/fb0/state
 #    write /sys/class/graphics/fb0/state 1
 
@@ -168,8 +174,6 @@ service iprenew_wlan0 /system/bin/dhcpcd -n
 service akmd /system/bin/akmd2
     class main
     oneshot
-
-
 
 
 # begin: comment out by h00131430 for BCM432x

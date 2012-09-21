@@ -8,6 +8,8 @@ ro.telephony.call_ring.delay=3000
 # WiFi
 wifi.interface=wlan0
 wifi.supplicant_scan_interval=60
+#wifi.softap.interface=wlan0
+#wifi.softapconcurrent.interface=wlan0
 
 # Graphics
 com.qc.hardware=true
@@ -42,10 +44,12 @@ ro.vold.umsdirtyratio=20
 # Dalviks
 dalvik.vm.dexopt-data-only=1
 dalvik.vm.execution-mode=int:jit
-
+dalvik.vm.verify_bytecode=false
+dalvik.vm.checkjni=0
+ro.kernel.android.checkjni=0
 
 ro.secure=0
 
-# tablet ui things, smallestScreenWidthDp=721, forcetabletUI=1/2
+# tablet ui things, smallestScreenWidthDp=721, forcetabletUI=1,2
 smallestScreenWidthDp=0
 forcetabletUI=0
