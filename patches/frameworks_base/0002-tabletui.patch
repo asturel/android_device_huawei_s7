@@ -1,0 +1,40 @@
+commit fbf5fb8533e4c0228840bf4017983778031b6db9
+Author: asturel <astur3l@gmail.com>
+Date:   Tue Sep 18 23:43:31 2012 +0200
+
+    tabletui
+    
+    Change-Id: If90813be7e23ba9c32c1a75f85243e28454ab719
+
+diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+index ad869e2..5a08fe6 100755
+--- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
++++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+@@ -1302,6 +1302,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+             mNavigationBarCanMove = false;
+         }
+ 
++        String forcetabletUI = SystemProperties.get("forcetabletUI");
++        if (forcetabletUI.equals("1")) mHasSystemNavBar = true;
++        else if (forcetabletUI.equals("2")) { mHasSystemNavBar = true; mNavigationBarCanMove = true; }
++
+         if (!mHasSystemNavBar) {
+             mHasNavigationBar = mContext.getResources().getBoolean(
+                     com.android.internal.R.bool.config_showNavigationBar);
+diff --git a/services/java/com/android/server/wm/WindowManagerService.java b/services/java/com/android/server/wm/WindowManagerService.java
+index 1dd0d08..fb1bf63 100755
+--- a/services/java/com/android/server/wm/WindowManagerService.java
++++ b/services/java/com/android/server/wm/WindowManagerService.java
+@@ -6431,6 +6431,12 @@ public class WindowManagerService extends IWindowManager.Stub
+         sl = reduceConfigLayout(sl, Surface.ROTATION_180, density, unrotDw, unrotDh);
+         sl = reduceConfigLayout(sl, Surface.ROTATION_270, density, unrotDh, unrotDw);
+         outConfig.smallestScreenWidthDp = (int)(mSmallestDisplayWidth / density);
++
++        try {
++            Integer smallestScreenWidthDOverride = Integer.parseInt(  SystemProperties.get("smallestScreenWidthDp") );
++            if (smallestScreenWidthDOverride > 0) outConfig.smallestScreenWidthDp = smallestScreenWidthDOverride;
++        } catch (Exception e) {};
++
+         outConfig.screenLayout = sl;
+     }
+ 
