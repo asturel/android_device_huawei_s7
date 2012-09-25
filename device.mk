@@ -281,6 +281,11 @@ PRODUCT_PACKAGES += \
         dexpreopt \
         wpa_supplicant.conf
 
+# PA Things
+PRODUCT_COPY_FILES += \
+    device/huawei/s7/prebuilt/system/app/ParanoidPreferences.apk:system/app/ParanoidPreferences.apk \
+    device/huawei/s7/prebuilt/system/etc/backup.conf:system/etc/backup.conf \
+    device/huawei/s7/prebuilt/system/etc/properties.conf:system/etc/properties.conf
 
 
 DISABLE_DEXPREOPT := false
