@@ -58,7 +58,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_ARCH_VARIANT_CPU := cortex-a8
 TARGET_ARCH_VARIANT_FPU := neon
-ARCH_ARM_HAVE_TLS_REGISTER := false
+ARCH_ARM_HAVE_TLS_REGISTER := true
 #TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
 #TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 #TARGET_USE_SCORPION_BIONIC_OPTIMIZATION := true
@@ -184,8 +184,8 @@ BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 WPA_SUPPLICANT_VERSION      := VER_0_6_X
 BOARD_WLAN_DEVICE           := bcm4319
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/dhd.ko"
-WIFI_DRIVER_FW_STA_PATH     := "/system/etc/wifi/rtecdc-bcm4329.bin"
-WIFI_DRIVER_FW_AP_PATH      := "/system/etc/wifi/rtecdc-apsta-bcm4319.bin"
+WIFI_DRIVER_FW_PATH_STA     := "/system/etc/wifi/rtecdc-bcm4319.bin"
+WIFI_DRIVER_FW_PATH_AP      := "/system/etc/wifi/rtecdc-apsta-bcm4319.bin"
 WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4319.bin nvram_path=/system/etc/wifi/nvram-bcm4319.txt"
 WIFI_DRIVER_MODULE_NAME     := "dhd"
 
@@ -196,6 +196,9 @@ BOARD_WEXT_NO_COMBO_SCAN    := true
 
 #BOARD_HOSTAPD_DRIVER        := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
+
+
+SMALLER_FONT_FOOTPRINT := true
 
 ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.secure=0 \
