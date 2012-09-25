@@ -114,5 +114,9 @@
 
     <bool name="config_wifiApFirmwareReload">false</bool>
 
+    <bool name="config_sf_limitedAlpha">true</bool>
+    <bool name="config_sf_slowBlur">false</bool>
+
+
 
 </resources>
