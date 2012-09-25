@@ -50,6 +50,9 @@ failed ()
 
 start_hciattach ()
 {
+  echo 0 > /sys/class/rfkill/rfkill0/state
+  echo 1 > /sys/class/rfkill/rfkill0/state
+
   echo 1 > $BLUETOOTH_SLEEP_PATH
   /system/bin/hciattach -n $BTS_DEVICE $BTS_TYPE $BTS_BAUD &
   hciattach_pid=$!
@@ -62,6 +65,7 @@ kill_hciattach ()
   ## careful not to kill zero or null!
   kill -TERM $hciattach_pid
   echo 0 > $BLUETOOTH_SLEEP_PATH
+
   # this shell doesn't exit now -- wait returns for normal exit
 }
 
