@@ -30,8 +30,12 @@ $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
 #$(call inherit-product-if-exists, vendor/gapps/gapps.mk)
 
-PRODUCT_AAPT_CONFIG := large mdpi hdpi
+#PRODUCT_AAPT_CONFIG := large mdpi hdpi
+#PRODUCT_AAPT_PREF_CONFIG := mdpi
+
+PRODUCT_AAPT_CONFIG := large ldpi mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
+PRODUCT_LOCALES += ldpi mdpi
 
 PRODUCT_CHARACTERISTICS = tablet
 
@@ -56,7 +60,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vold.umsdirtyratio=20
 
 #Common packages (gingerbread/ics)
-PRODUCT_PACKAGES += \
+xPRODUCT_PACKAGES += \
     librs_jni \
     dspexec \
     libbridge \
@@ -77,16 +81,16 @@ PRODUCT_PACKAGES += \
     su
 
 # for jpeg hw encoder/decoder
-PRODUCT_PACKAGES += libskiahw
+#PRODUCT_PACKAGES += libskiahw
 
 
-PRODUCT_PACKAGES += e2fsck
+#PRODUCT_PACKAGES += e2fsck
 
 # Add DroidSSHd (dropbear) Management App - tpruvot/android_external_droidsshd @ github
-PRODUCT_PACKAGES += DroidSSHd dropbear dropbearkey sftp-server scp ssh
+#PRODUCT_PACKAGES += DroidSSHd dropbear dropbearkey sftp-server scp ssh
 
 # Missing in CM9
-PRODUCT_PACKAGES += AndroidTerm DSPManager
+#PRODUCT_PACKAGES += AndroidTerm DSPManager
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -123,16 +127,12 @@ PRODUCT_COPY_FILES += \
 # Wifi
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system//lib/modules/dhd.ko:system/lib/modules/dhd.ko \
-    device/huawei/s7/prebuilt/system//lib/modules/bcm4329.ko:system/lib/modules/bcm4329.ko \
-    device/huawei/s7/prebuilt/system//etc/wifi/nvram_mfgtest-bcm4329.txt:system/etc/wifi/nvram_mfgtest-bcm4329.txt \
-    device/huawei/s7/prebuilt/system//etc/wifi/nvram-bcm4329.txt:system/etc/wifi/nvram-bcm4329.txt \
-    device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-apsta-bcm4329.bin:system/etc/wifi/rtecdc-apsta-bcm4329.bin \
     device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-bcm4319.bin:system/etc/wifi/rtecdc-bcm4319.bin \
     device/huawei/s7/prebuilt/system//etc/wifi/nvram_mfgtest-bcm4319.txt:system/etc/wifi/nvram_mfgtest-bcm4319.txt \
     device/huawei/s7/prebuilt/system//etc/wifi/nvram-bcm4319.txt:system/etc/wifi/nvram-bcm4319.txt \
     device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-apsta-bcm4319.bin:system/etc/wifi/rtecdc-apsta-bcm4319.bin \
     device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-mfgtest-bcm4319.bin:system/etc/wifi/rtecdc-mfgtest-bcm4319.bin \
-    device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-mfgtest-bcm4329.bin:system/etc/wifi/rtecdc-mfgtest-bcm4329.bin \
+    device/huawei/s7/prebuilt/system//etc/wifi/wpa_supplicant.conf:system//etc/wifi/wpa_supplicant.conf \
     device/huawei/s7/prebuilt/system/etc/nv.bin:system/etc/nv.bin
 
 
@@ -223,17 +223,6 @@ PRODUCT_COPY_FILES += \
 #    device/huawei/s7/prebuilt/system/lib/libcamera.so:obj/lib/libcamera.so
 
 
-# Live wallpaper packages
-PRODUCT_PACKAGES += \
-    LiveWallpapers \
-    LiveWallpapersPicker \
-    Music \
-    SoundRecoder
-
-# ICS USB Packages
-#PRODUCT_PACKAGES += com.android.future.usb.accessory
-
-
 # Graphics
 
 PRODUCT_PACKAGES += \
@@ -257,7 +246,6 @@ PRODUCT_PACKAGES += \
     libstagefrighthw \
     libOmxVdec \
     libOmxVidEnc \
-    libmm-omxcore \
     libtilerenderer
 
 
@@ -280,8 +268,18 @@ PRODUCT_PACKAGES += \
     lights.s7
 
 
+
+# Live Wallpapers
 PRODUCT_PACKAGES += \
-    dexpreopt
+        LiveWallpapersPicker \
+        librs_jni
+
+# Other
+PRODUCT_PACKAGES += \
+        make_ext4fs \
+        setup_fs \
+        dexpreopt \
+        wpa_supplicant.conf
 
 
 
@@ -313,8 +311,10 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/bin/hci_qcomm_init:system/bin/hci_qcomm_init \
     device/huawei/s7/prebuilt/system/bin/hciattach:system/bin/hciattach \
     device/huawei/s7/prebuilt/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
-    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
-    device/huawei/s7/prebuilt/system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd:system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd
+    device/huawei/s7/prebuilt/system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd:system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd \
+    device/huawei/s7/prebuilt/system/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf
+#    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
+
 
 
 ifneq ($(TARGET_PREBUILT_KERNEL),)
@@ -337,6 +337,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 #$(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 
+#$(call inherit-product, external/wpa_supplicant_6/wpa_supplicant/wpa_supplicant_conf.mk)
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 #$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
 
