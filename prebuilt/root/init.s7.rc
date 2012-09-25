@@ -4,10 +4,13 @@ on early-init
         export EXTERNAL_STORAGE /mnt/sdcard
         mkdir /mnt/sdcard 0777 system system
         mkdir /mnt/sdcard2 0777 system system
+        mkdir /mnt/pendrive 0777 system system
+
 
         # for backwards compatibility
         symlink /mnt/sdcard /sdcard
         symlink /mnt/sdcard2 /sdcard2
+        symlink /mnt/pendrive /pendrive
 
 
 service dhcp-service /system/bin/netcfg wlan0 dhcp

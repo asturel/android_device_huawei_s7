@@ -173,14 +173,13 @@ TARGET_RECOVERY_PIXEL_FORMAT = RGB_565
 
 # Wifi related defines
 
-
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 WPA_SUPPLICANT_VERSION      := VER_0_6_X
-BOARD_WLAN_DEVICE           := bcm4329
+BOARD_WLAN_DEVICE           := bcm4319
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/dhd.ko"
-WIFI_DRIVER_FW_STA_PATH     := "/system/etc/wifi/rtecdc-bcm4329.bin"
-WIFI_DRIVER_FW_AP_PATH      := "/system/etc/wifi/rtecdc-apsta-bcm4329.bin"
-WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4329.bin nvram_path=/system/etc/wifi/nvram-bcm4329.txt"
+WIFI_DRIVER_FW_PATH_STA     := "/system/etc/wifi/rtecdc-bcm4319.bin"
+WIFI_DRIVER_FW_PATH_AP      := "/system/etc/wifi/rtecdc-apsta-bcm4319.bin"
+WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4319.bin nvram_path=/system/etc/wifi/nvram-bcm4319.txt"
 WIFI_DRIVER_MODULE_NAME     := "dhd"
 
 # fix work on old kernel
@@ -188,7 +187,7 @@ BOARD_WEXT_NO_COMBO_SCAN    := true
 
 #BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
 
-BOARD_HOSTAPD_DRIVER        := WEXT
+#BOARD_HOSTAPD_DRIVER        := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_wext
 
 ADDITIONAL_DEFAULT_PROPERTIES += \

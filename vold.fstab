@@ -25,4 +25,5 @@
 
 dev_mount sdcard /mnt/sdcard auto /devices/platform/msm_sdcc.3/mmc_host/mmc2
 dev_mount sdcard2 /mnt/sdcard2 auto /devices/platform/msm_sdcc.1/mmc_host/mmc0
-dev_mount udisk /mnt/udisk auto /devices/platform/msm_hsusb_host.1/usb1
+dev_mount udisk /mnt/pendrive auto /devices/platform/msm_hsusb_host.0/usb2/2-1/2-1:1.0/
+

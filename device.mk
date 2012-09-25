@@ -299,7 +299,9 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
     frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh
+    device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh \
+    vendor/goo/GooManager_2.1.2.apk:system/app/GooManager.apk
+
 
 
 # Bluetooth configuration files
@@ -321,8 +323,16 @@ endif
 PRODUCT_COPY_FILES += \
     device/huawei/s7/kernel:kernel
 
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.goo.developerid=asturel \
+    ro.goo.board=$(TARGET_PRODUCT) \
+    ro.goo.rom=CM9s7 \
+    ro.goo.version=$(shell date +%s)
+
+
 $(call inherit-product,  frameworks/base/build/tablet-dalvik-heap.mk)
-$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
+#$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
 
 #$(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 #$(call inherit-product-if-exists,hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
