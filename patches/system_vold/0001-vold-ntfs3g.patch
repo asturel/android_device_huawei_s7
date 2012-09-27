@@ -1,0 +1,57 @@
+commit 594439c94f2dbc0462451c06400d203d714d07ed
+Author: asturel <astur3l@gmail.com>
+Date:   Thu Sep 27 16:39:31 2012 +0200
+
+    vold: ntfs-3g
+    
+    Change-Id: I4e01e4524f0d37eb25e1beaa2b25dae825111683
+
+diff --git a/Ntfs.cpp b/Ntfs.cpp
+index d5e9772..657ee74 100644
+--- a/Ntfs.cpp
++++ b/Ntfs.cpp
+@@ -38,6 +38,9 @@
+ 
+ #include "Ntfs.h"
+ 
++static char MOUNT_NTFS3G_PATH[] ="/system/bin/ntfs-3g";
++
++
+ extern "C" int logwrap(int argc, const char **argv, int background);
+ extern "C" int mount(const char *, const char *, const char *, unsigned long, const void *);
+ 
+@@ -53,6 +56,26 @@ int Ntfs::doMount(const char *fsPath, const char *mountPoint,
+                  bool ro, bool remount, bool executable,
+                  int ownerUid, int ownerGid, int permMask, bool createLost) {
+     int rc;
++
++    if (!access(MOUNT_NTFS3G_PATH, X_OK))
++    {
++	const char *args[4];
++	args[0] = MOUNT_NTFS3G_PATH;
++        args[1] = fsPath;
++        args[2] = mountPoint;
++        args[3] = NULL;
++
++        rc = logwrap(3, args, 1);
++        if( (rc != 0) && (rc !=15) )
++	{
++           SLOGE("Filesystem check failed (unknown exit code %d)", rc);
++           return -1;
++        }
++	return 0;
++
++    } else {
++
++
+     unsigned long flags;
+     char mountData[255];
+ 
+@@ -92,6 +115,7 @@ int Ntfs::doMount(const char *fsPath, const char *mountPoint,
+     }
+ 
+     return rc;
++    }
+ }
+ 
+ int Ntfs::format(const char *fsPath, unsigned int numSectors) {

@@ -209,6 +209,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libgps.so:obj/lib/libgps.so
 
 
+
 # Audio
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/DualMicControl.txt:system/etc/DualMicControl.txt
@@ -221,6 +222,14 @@ PRODUCT_COPY_FILES += \
 #    device/huawei/s7/prebuilt/system/lib/libcamera.so:system/lib/libcamera.so \
 #    device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
 #    device/huawei/s7/prebuilt/system/lib/libcamera.so:obj/lib/libcamera.so
+
+
+# ntfs
+
+PRODUCT_COPY_FILES += \
+    device/huawei/s7/prebuilt/system/bin/ntfs-3g:system/bin/ntfs-3g
+#    device/huawei/s7/prebuilt/system/lib/modules/fuse.ko:system/lib/modules/fuse.ko \
+
 
 
 # Graphics
