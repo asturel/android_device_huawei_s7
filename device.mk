@@ -200,6 +200,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libgps.so:obj/lib/libgps.so
 
 
+
 # Audio
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/DualMicControl.txt:system/etc/DualMicControl.txt
@@ -231,6 +232,14 @@ PRODUCT_PACKAGES += \
 
 # ICS USB Packages
 #PRODUCT_PACKAGES += com.android.future.usb.accessory
+
+
+# ntfs
+
+PRODUCT_COPY_FILES += \
+    device/huawei/s7/prebuilt/system/bin/ntfs-3g:system/bin/ntfs-3g
+#    device/huawei/s7/prebuilt/system/lib/modules/fuse.ko:system/lib/modules/fuse.ko \
+
 
 
 # Graphics
