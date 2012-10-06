@@ -149,7 +149,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
     case STRATEGY_SONIFICATION:
         // If incall, just select the STRATEGY_PHONE device: The rest of the behavior is handled by
         // handleIncallSonification().
-        if (mPhoneState == AudioSystem::MODE_IN_CALL) {
+        if (isInCall()) {
             device = getDeviceForStrategy(STRATEGY_PHONE, false);
             break;
         }
@@ -223,7 +223,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
         }
         // Do not play media stream if in call and the requested device would change the hardware
         // output routing
-        if (mPhoneState == AudioSystem::MODE_IN_CALL &&
+        if (isInCall() &&
             !AudioSystem::isA2dpDevice((AudioSystem::audio_devices)device) &&
             device != getDeviceForStrategy(STRATEGY_PHONE, false)) {
             device = 0;
@@ -290,7 +290,7 @@ float AudioPolicyManager::computeVolume(int stream, int index, audio_io_handle_t
 
     // limit stream volume when in call and playing over bluetooth SCO device to
     // avoid saturation
-    if (mPhoneState == AudioSystem::MODE_IN_CALL && AudioSystem::isBluetoothScoDevice((AudioSystem::audio_devices)device)) {
+    if (isInCall() && AudioSystem::isBluetoothScoDevice((AudioSystem::audio_devices)device)) {
         if (volume > IN_CALL_SCO_VOLUME_MAX) {
             ALOGV("computeVolume limiting SYSTEM volume %f to %f",volume, IN_CALL_SCO_VOLUME_MAX);
             volume = IN_CALL_SCO_VOLUME_MAX;
