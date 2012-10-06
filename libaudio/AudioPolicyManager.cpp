@@ -61,7 +61,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
 
     switch (strategy) {
     case STRATEGY_DTMF:
-        if (mPhoneState != AudioSystem::MODE_IN_CALL) {
+        if (!isInCall()) {
             // when off call, DTMF strategy follows the same rules as MEDIA strategy
             device = getDeviceForStrategy(STRATEGY_MEDIA, false);
             break;
@@ -74,7 +74,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
         // of priority
         switch (mForceUse[AudioSystem::FOR_COMMUNICATION]) {
         case AudioSystem::FORCE_BT_SCO:
-            if (mPhoneState != AudioSystem::MODE_IN_CALL || strategy != STRATEGY_DTMF) {
+            if (!isInCall() || strategy != STRATEGY_DTMF) {
                 device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_CARKIT;
                 if (device) break;
             }
@@ -92,7 +92,7 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
             device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET;
             if (device) break;
             // when not in call:
-            if (mPhoneState != AudioSystem::MODE_IN_CALL) {
+            if (!isInCall()) {
                 // - if we are docked to a BT CAR dock, give A2DP preference over earpiece
                 // - if we are docked to a BT DESK dock, give speaker preference over earpiece
                 if (mForceUse[AudioSystem::FOR_DOCK] == AudioSystem::FORCE_BT_CAR_DOCK) {
@@ -122,12 +122,12 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
             break;
 
         case AudioSystem::FORCE_SPEAKER:
-            if (mPhoneState != AudioSystem::MODE_IN_CALL || strategy != STRATEGY_DTMF) {
+            if (!isInCall() || strategy != STRATEGY_DTMF) {
                 device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_CARKIT;
                 if (device) break;
             }
             // when not in call:
-            if (mPhoneState != AudioSystem::MODE_IN_CALL) {
+            if (!isInCall()) {
                 // - if we are docked to a BT CAR dock, give A2DP preference over phone spkr
                 if (mForceUse[AudioSystem::FOR_DOCK] == AudioSystem::FORCE_BT_CAR_DOCK) {
                     device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_BLUETOOTH_A2DP;
