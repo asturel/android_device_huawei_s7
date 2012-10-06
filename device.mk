@@ -216,11 +216,14 @@ PRODUCT_COPY_FILES += \
 
 
 # Camera
-#PRODUCT_COPY_FILES += \
-#    device/huawei/s7/prebuilt/system/lib/libmmipl.so:system/lib/libmmipl.so \
-#    device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
-#    device/huawei/s7/prebuilt/system/lib/libcamera.so:system/lib/libcamera.so \
-#    device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
+PRODUCT_COPY_FILES += \
+    device/huawei/s7/prebuilt/system/lib/libmmipl.so:system/lib/libmmipl.so \
+    device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
+    device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
+    device/huawei/s7/prebuilt/system/lib/libmmipl.so:obj/lib/libmmipl2.so \
+    device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:obj/lib/libmmjpeg2.so \
+    device/huawei/s7/prebuilt/system/lib/liboemcamera.so:obj/lib/liboemcamera.so
+
 #    device/huawei/s7/prebuilt/system/lib/libcamera.so:obj/lib/libcamera.so
 
 
@@ -259,8 +262,10 @@ PRODUCT_PACKAGES += \
 
 
 # Camera
-#PRODUCT_PACKAGES += \
-#    camera.qsd8k
+PRODUCT_PACKAGES += \
+    camera.qsd8k \
+    LegacyCamera
+
 
 #PRODUCT_PACKAGES += \
 #    camera.s7
