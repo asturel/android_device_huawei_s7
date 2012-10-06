@@ -314,6 +314,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     device/huawei/s7/prebuilt/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
+    device/huawei/s7/prebuilt/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
     device/huawei/s7/prebuilt/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
     device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh \
     vendor/goo/GooManager_2.1.2.apk:system/app/GooManager.apk
