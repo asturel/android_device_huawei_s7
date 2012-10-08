@@ -204,3 +204,5 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.secure=0 \
     service.adb.enable=1 \
     sys.usb.config=adb
+
+PARANOID_BOOTANIMATION_NAME := MDPI
