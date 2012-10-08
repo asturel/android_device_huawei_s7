@@ -333,13 +333,9 @@ PRODUCT_COPY_FILES += \
 
 
 ifneq ($(TARGET_PREBUILT_KERNEL),)
-    PRODUCT_COPY_FILES += \
-    $(TARGET_PREBUILT_KERNEL):kernel
-endif
-
 PRODUCT_COPY_FILES += \
     device/huawei/s7/kernel:kernel
-
+endif
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.goo.developerid=asturel \
