@@ -6,7 +6,7 @@ on early-init
 
 on init
     export PATH /sbin:/system/sbin:/system/bin:/system/xbin
-    export LD_LIBRARY_PATH /system/lib
+    export LD_LIBRARY_PATH /system/lib:/sbin
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
