@@ -102,8 +102,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/root/init.s7.rc:root/init.s7.rc \
     device/huawei/s7/prebuilt/root/init.s7.usb.rc:root/init.s7.usb.rc \
-    device/huawei/s7/prebuilt/root/ueventd.s7.rc:root/ueventd.rc \
-    device/huawei/s7/prebuilt/root/initlogo.rle:root/initlogo.rle
+    device/huawei/s7/prebuilt/root/ueventd.s7.rc:root/ueventd.rc
+#    device/huawei/s7/prebuilt/root/initlogo.rle:root/initlogo.rle
 
 
 # GPU
@@ -216,7 +216,7 @@ PRODUCT_COPY_FILES += \
 
 
 # Camera
-PRODUCT_COPY_FILES += \
+xPRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libmmipl.so:system/lib/libmmipl.so \
     device/huawei/s7/prebuilt/system/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
     device/huawei/s7/prebuilt/system/lib/liboemcamera.so:system/lib/liboemcamera.so \
@@ -262,9 +262,9 @@ PRODUCT_PACKAGES += \
 
 
 # Camera
-PRODUCT_PACKAGES += \
-    camera.qsd8k \
-    LegacyCamera
+#PRODUCT_PACKAGES += \
+#    camera.qsd8k \
+#    LegacyCamera
 
 
 #PRODUCT_PACKAGES += \
