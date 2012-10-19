@@ -90,10 +90,9 @@
         <item>0</item>
     </integer-array>
 
+    <string name="config_networkLocationProviderPackageName" translatable="false">com.google.android.location</string>
 
-    <string name="config_networkLocationProviderPackageName">com.google.android.location.NetworkLocationProvider</string>
-
-    <string name="config_geocodeProviderPackageName">com.google.android.location.GeocodeProvider</string>
+    <string name="config_geocodeProviderPackageName" translatable="false">com.google.android.location</string>
 
     <bool name="config_bluetooth_adapter_quick_switch">false</bool>
 
