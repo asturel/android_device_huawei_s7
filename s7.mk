@@ -22,8 +22,8 @@
 #
 
 # Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+
 # Inherit from s7 device
 $(call inherit-product, device/huawei/s7/device.mk)
 
@@ -34,6 +34,7 @@ PRODUCT_DEVICE := s7
 PRODUCT_BRAND := Huawei
 PRODUCT_MODEL := S7
 PRODUCT_MANUFACTURER := HUAWEI
+
 #PRODUCT_BUILD_PROP_OVERRIDES += BUILD_FINGERPRINT=google/soju/crespo:4.0.4/IMM76D/299849:user/release-keys PRIVATE_BUILD_DESC="soju-user 4.0.4 IMM76D 299849 release-keys"
 
 
