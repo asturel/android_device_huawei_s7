@@ -102,8 +102,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/root/init.s7.rc:root/init.s7.rc \
     device/huawei/s7/prebuilt/root/init.s7.usb.rc:root/init.s7.usb.rc \
-    device/huawei/s7/prebuilt/root/ueventd.s7.rc:root/ueventd.rc
-#    device/huawei/s7/prebuilt/root/initlogo.rle:root/initlogo.rle
+    device/huawei/s7/prebuilt/root/ueventd.s7.rc:root/ueventd.rc \
+    device/huawei/s7/prebuilt/root/initlogo.rle:root/initlogo.rle
 
 
 # GPU
@@ -256,9 +256,13 @@ PRODUCT_PACKAGES += \
     libmm-omxcore \
     libOmxCore \
     libstagefrighthw \
+    libtilerenderer \
     libOmxVdec \
     libOmxVidEnc \
-    libtilerenderer
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxEvrcEnc \
+    libOmxQcelp13Enc
 
 
 # Camera
@@ -309,7 +313,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
     frameworks/native/data/etc/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/android.hardware.sensor.compass.xml \
+    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
