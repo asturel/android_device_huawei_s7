@@ -30,7 +30,7 @@ on property:dev.bootcomplete=1
         start dhcp-service
 
 on init
-    mkdir /data2 0771 system system
+#    mkdir /data2 0771 system system
     chmod 0777 /sys/class/graphics/fb0/state
     write /sys/class/graphics/fb0/state 1
 
