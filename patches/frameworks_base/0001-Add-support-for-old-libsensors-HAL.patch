@@ -1,17 +1,21 @@
-commit 1814aaf0e0024109b23cf75ca09886ff04329d19
-Author: asturel <astur3l@gmail.com>
-Date:   Fri Sep 21 17:42:35 2012 +0200
+From acc67518c6a8bdb842440e0cd5c8f59f955b275c Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Fri, 21 Sep 2012 19:32:22 +0200
+Subject: [PATCH 1/2] Add support for old libsensors HAL 	Enable with
+ TARGET_USES_OLD_LIBSENSORS_HAL:=true Add
+ TARGET_SENSORS_NO_OPEN_CHECK
 
-    Add support for old libsensors HAL
-    Enable with TARGET_USES_OLD_LIBSENSORS_HAL:=true
-    (for gingerbread, froyo prebuilt sensors)
-    
-    Change-Id: If76f254189c9dca49ec69436d3a0f2cad34bca88
+Change-Id: I8d6c55d2159d69c81e17dff7e815c4cda30aa5a4
+---
+ services/sensorservice/Android.mk           |    8 ++
+ services/sensorservice/SensorDevice.cpp     |  156 ++++++++++++++++++++++++---
+ services/sensorservice/SensorDevice.h       |    8 ++
+ services/sensorservice/sensors_deprecated.h |   75 +++++++++++++
+ 4 files changed, 233 insertions(+), 14 deletions(-)
+ create mode 100644 services/sensorservice/sensors_deprecated.h
 
 diff --git a/services/sensorservice/Android.mk b/services/sensorservice/Android.mk
-old mode 100644
-new mode 100755
-index cb16261..7fb3390
+index cb16261..7fb3390 100644
 --- a/services/sensorservice/Android.mk
 +++ b/services/sensorservice/Android.mk
 @@ -29,6 +29,14 @@ ifneq ($(BOARD_SYSFS_LIGHT_SENSOR),)
@@ -30,9 +34,7 @@ index cb16261..7fb3390
  
  include $(BUILD_SHARED_LIBRARY)
 diff --git a/services/sensorservice/SensorDevice.cpp b/services/sensorservice/SensorDevice.cpp
-old mode 100644
-new mode 100755
-index b83a4ea..978c450
+index b83a4ea..978c450 100644
 --- a/services/sensorservice/SensorDevice.cpp
 +++ b/services/sensorservice/SensorDevice.cpp
 @@ -35,6 +35,11 @@
@@ -268,9 +270,7 @@ index b83a4ea..978c450
  
  // ---------------------------------------------------------------------------
 diff --git a/services/sensorservice/SensorDevice.h b/services/sensorservice/SensorDevice.h
-old mode 100644
-new mode 100755
-index 728b6cb..b031a42
+index 728b6cb..b031a42 100644
 --- a/services/sensorservice/SensorDevice.h
 +++ b/services/sensorservice/SensorDevice.h
 @@ -36,6 +36,14 @@ static const nsecs_t DEFAULT_EVENTS_PERIOD = 200000000; //    5 Hz
@@ -369,3 +369,6 @@ index 0000000..efaf6ba
 +}
 +
 +};
+-- 
+1.7.10.4
+

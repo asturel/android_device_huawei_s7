@@ -1,10 +1,12 @@
-commit 1059757761ceb5a79c34335df0fa9618bd99c56f
-Author: asturel <astur3l@gmail.com>
-Date:   Tue Sep 18 23:19:32 2012 +0200
+From 83052f4996d2a27d8134e16ea26de4cc24088030 Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Wed, 26 Sep 2012 13:40:51 +0200
+Subject: [PATCH] signal fix
 
-    fix wpa_supplicant_signal_poll
-    
-    Change-Id: I91fbb2881ee48871e8122dc991f34b4257f503e7
+Change-Id: Id15fd5157d6ac42a30d8911ff0442edb8022ee9a
+---
+ wpa_supplicant/ctrl_iface.c |   26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/wpa_supplicant/ctrl_iface.c b/wpa_supplicant/ctrl_iface.c
 index 9b2114b..4725160 100644
@@ -51,3 +53,6 @@ index 9b2114b..4725160 100644
  #endif
  
  char * wpa_supplicant_ctrl_iface_process(struct wpa_supplicant *wpa_s,
+-- 
+1.7.10.4
+

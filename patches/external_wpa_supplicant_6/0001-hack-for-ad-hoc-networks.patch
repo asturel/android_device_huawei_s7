@@ -1,0 +1,90 @@
+From 2a9915922a0bbb633f3e2fc1e4148124e9bf34a5 Mon Sep 17 00:00:00 2001
+From: Konsta <konsta09@gmail.com>
+Date: Sat, 25 Aug 2012 10:31:11 +0300
+Subject: [PATCH] hack for ad-hoc networks
+
+thanks to kelvie & szym
+https://github.com/kelvie/android-wpa_supplicant/commit/8415a970a26496f5e2c38f37564afbb526cdae97
+http://szym.net/android/adhoc-wpa-supp.html
+
+Change-Id: I3164621ba74a8331a17960577cb6fa485b0c8f44
+---
+ wpa_supplicant/ctrl_iface.c |   41 +++++++++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
+
+diff --git a/wpa_supplicant/ctrl_iface.c b/wpa_supplicant/ctrl_iface.c
+index 9b2114b..ae9b1e3 100644
+--- a/wpa_supplicant/ctrl_iface.c
++++ b/wpa_supplicant/ctrl_iface.c
+@@ -341,9 +341,14 @@ static int wpa_supplicant_ctrl_iface_status(struct wpa_supplicant *wpa_s,
+ 					ssid_len = _res;
+ 				_ssid = ssid_buf;
+ 			}
+-			ret = os_snprintf(pos, end - pos, "ssid=%s\nid=%d\n",
+-					  wpa_ssid_txt(_ssid, ssid_len),
+-					  ssid->id);
++                        if (ssid->mode == IEEE80211_MODE_IBSS)
++                                ret = os_snprintf(pos, end - pos, "ssid=%s%s\nid=%d\n",
++                                "(*)", wpa_ssid_txt(_ssid, ssid_len),
++                                ssid->id);
++                        else
++                                ret = os_snprintf(pos, end - pos, "ssid=%s\nid=%d\n",
++                                wpa_ssid_txt(_ssid, ssid_len),
++                                ssid->id);
+ 			if (ret < 0 || ret >= end - pos)
+ 				return pos - buf;
+ 			pos += ret;
+@@ -788,12 +793,6 @@ static int wpa_supplicant_ctrl_iface_scan_result(
+ 			return -1;
+ 		pos += ret;
+ 	}
+-	if (res->caps & IEEE80211_CAP_IBSS) {
+-		ret = os_snprintf(pos, end - pos, "[IBSS]");
+-		if (ret < 0 || ret >= end - pos)
+-			return -1;
+-		pos += ret;
+-	}
+     /* Just to make the fields line up nicely when printed */
+ 	if (!ie && !ie2) {
+ 		ret = os_snprintf(pos, end - pos, "\t");
+@@ -802,9 +801,14 @@ static int wpa_supplicant_ctrl_iface_scan_result(
+ 		pos += ret;
+ 	}
+ 	ie = wpa_scan_get_ie(res, WLAN_EID_SSID);
+-	ret = os_snprintf(pos, end - pos, "\t%s",
+-			  ie ? wpa_ssid_txt(ie + 2, ie[1]) : "");
+-	if (ret < 0 || ret >= end - pos)
++
++        if (res->caps & IEEE80211_CAP_IBSS)
++                ret = os_snprintf(pos, end - pos, "\t%s%s", "(*)",
++                        wpa_ssid_txt(ie + 2, ie[1]));
++        else
++                ret = os_snprintf(pos, end - pos, "\t%s",
++                        ie ? wpa_ssid_txt(ie + 2, ie[1]) : "");
++        if (ret < 0 || ret >= end - pos)
+ 		return -1;
+ 	pos += ret;
+ 
+@@ -1096,6 +1100,19 @@ static int wpa_supplicant_ctrl_iface_set_network(
+ 		return -1;
+ 	}
+ 
++        if (os_strcmp(name, "ssid") == 0) {
++                // check prefix
++                if ((value[0] == '"') && (os_strncmp(value+1, "(*)", 3) == 0)) {
++                        if (wpa_config_set(ssid, "mode", "1", 0) < 0) {
++                                wpa_printf(MSG_DEBUG, "CTRL_IFACE: failed to set IBSS on '%s'",
++                                                value);
++                                return -1;
++                        }
++                        value += 3;
++                        value[0] = '"';
++                }
++        }
++
+ 	if (wpa_config_set(ssid, name, value, 0) < 0) {
+ 		wpa_printf(MSG_DEBUG, "CTRL_IFACE: Failed to set network "
+ 			   "variable '%s'", name);
+-- 
+1.7.9.5
+
