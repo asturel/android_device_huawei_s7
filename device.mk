@@ -226,6 +226,12 @@ xPRODUCT_COPY_FILES += \
 
 #    device/huawei/s7/prebuilt/system/lib/libcamera.so:obj/lib/libcamera.so
 
+#OMX
+PRODUCT_COPY_FILES += \
+    device/huawei/s7/prebuilt/system/lib/libOmxCore.so:system/lib/libOmxCore.so \
+    device/huawei/s7/prebuilt/system/lib/libOmxVdec.so:system/lib/libOmxVdec.so \
+    device/huawei/s7/prebuilt/system/lib/libOmxVidEnc.so:system/lib/libOmxVidEnc.so
+
 
 # ntfs
 
@@ -327,9 +333,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/init.bt.sh:system/etc/init.bt.sh \
     device/huawei/s7/prebuilt/system/etc/init.brcm.bt.sh:system/etc/init.brcm.bt.sh \
+    device/huawei/s7/prebuilt/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
+    device/huawei/s7/prebuilt/system/etc/init.qcom.coex.sh:system/etc/init.qcom.coex.sh \
     device/huawei/s7/prebuilt/system/bin/hci_qcomm_init:system/bin/hci_qcomm_init \
     device/huawei/s7/prebuilt/system/bin/hciattach:system/bin/hciattach \
-    device/huawei/s7/prebuilt/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
+    device/huawei/s7/prebuilt/system/bin/hciattach:system/bin/hciattach \
     device/huawei/s7/prebuilt/system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd:system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd \
     device/huawei/s7/prebuilt/system/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf
 #    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
