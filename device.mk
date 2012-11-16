@@ -372,3 +372,9 @@ $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 #$(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 #$(call inherit-product-if-exists,hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
 
+
+
+ifneq ($(PA_VERSION_MAJOR),0)
+    PRODUCT_PROPERTY_OVERRIDES += persist.sys.nobootanimation=0
+
+endif
