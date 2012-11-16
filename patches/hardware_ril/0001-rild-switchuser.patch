@@ -1,0 +1,33 @@
+From 8e9c02ed108c0a3e9d5f32df88c7dc517c3ee6a0 Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Mon, 22 Oct 2012 04:45:37 +0200
+Subject: [PATCH] rild switchuser
+
+Change-Id: Ie3f403094528301861a9aae73541e7169ecefec3
+---
+ rild/rild.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rild/rild.c b/rild/rild.c
+index 77dec1e..0c9ebbb 100644
+--- a/rild/rild.c
++++ b/rild/rild.c
+@@ -85,6 +85,7 @@ static int make_argv(char * args, char ** argv)
+  * Our group, cache, was set by init.
+  */
+ void switchUser() {
++#if 0
+     prctl(PR_SET_KEEPCAPS, 1, 0, 0, 0);
+     setuid(AID_RADIO);
+ 
+@@ -95,6 +96,7 @@ void switchUser() {
+     cap.effective = cap.permitted = (1 << CAP_NET_ADMIN) | (1 << CAP_NET_RAW);
+     cap.inheritable = 0;
+     capset(&header, &cap);
++#endif
+ }
+ 
+ int main(int argc, char **argv)
+-- 
+1.7.10.4
+
