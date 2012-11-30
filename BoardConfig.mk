@@ -61,8 +61,8 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_CMDLINE := console=ttyMSM2,115200n8 androidboot.hardware=s7
 TARGET_SPECIFIC_HEADER_PATH := device/huawei/s7/include
 TARGET_PREBUILT_RECOVERY_KERNEL := device/huawei/s7/kernel_recovery
-#TARGET_KERNEL_CONFIG := cyanogenmod_s7_defconfig
-TARGET_PREBUILT_KERNEL := device/huawei/s7/kernel
+TARGET_KERNEL_CONFIG := cm_s7_slim_defconfig
+#TARGET_PREBUILT_KERNEL := device/huawei/s7/kernel
 
 
 # QCOM Dependencies
