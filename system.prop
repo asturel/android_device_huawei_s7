@@ -50,6 +50,12 @@ ro.kernel.android.checkjni=0
 
 ro.secure=0
 
+# ZRAM
+
+ro.zram.default=0
+
+
+
 # tablet ui things, smallestScreenWidthDp=721, forcetabletUI=1,2
 smallestScreenWidthDp=0
 forcetabletUI=0
