@@ -1,0 +1,29 @@
+From 047506fd1833324a21f46455d1997bcccbea38e8 Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Sat, 1 Dec 2012 19:43:08 -0700
+Subject: [PATCH] omx: fix seeking
+
+Change-Id: If7dcdffab625ee6c0c5af0b9ebeedea69be2381c
+---
+ media/libstagefright/OMXCodec.cpp |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/media/libstagefright/OMXCodec.cpp b/media/libstagefright/OMXCodec.cpp
+index 86a9d76..7b5fcad 100644
+--- a/media/libstagefright/OMXCodec.cpp
++++ b/media/libstagefright/OMXCodec.cpp
+@@ -3120,9 +3120,10 @@ void OMXCodec::onCmdComplete(OMX_COMMANDTYPE cmd, OMX_U32 data) {
+ #endif
+             CHECK_EQ((int)mPortStatus[portIndex], (int)SHUTTING_DOWN);
+             mPortStatus[portIndex] = ENABLED;
+-
++#ifndef QCOM_LEGACY_OMX
+             CHECK_EQ(countBuffersWeOwn(mPortBuffers[portIndex]),
+                      mPortBuffers[portIndex].size());
++#endif
+ #ifdef QCOM_HARDWARE
+             }
+ #endif
+-- 
+1.7.5.4
+
