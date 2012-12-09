@@ -63,6 +63,8 @@ on boot
     chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
 
 
+    write /proc/sys/kernel/panic 1
+
 
 #adbd
    chown system system /sys/module/g_android/parameters/product_id
