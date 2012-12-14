@@ -150,7 +150,12 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/usr/keychars/s7_keypad.kcm.bin:system/usr/keychars/s7_keypad.kcm.bin \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/s7_handset.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_keypad.kl:system/usr/keylayout/s7_keypad.kl \
-    device/huawei/s7/prebuilt/system/usr/keylayout/Generic.kl:system/usr/keylayout/Generic.kl
+    device/huawei/s7/prebuilt/system/usr/keylayout/Generic.kl:system/usr/keylayout/Generic.kl \
+    device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/t1320.kl \
+    device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/msm_touchscreen.kl \
+    device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/mxt224_touchscreen.kl
+
+#    device/huawei/s7/prebuilt/system/usr/keylayout/Generic.kl:system/usr/keylayout/Generic.kl
 
 
 
