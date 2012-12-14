@@ -127,7 +127,9 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-apsta-bcm4319.bin:system/etc/wifi/rtecdc-apsta-bcm4319.bin \
     device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-mfgtest-bcm4319.bin:system/etc/wifi/rtecdc-mfgtest-bcm4319.bin \
     device/huawei/s7/prebuilt/system//etc/wifi/rtecdc-mfgtest-bcm4329.bin:system/etc/wifi/rtecdc-mfgtest-bcm4329.bin \
-    device/huawei/s7/prebuilt/system/etc/nv.bin:system/etc/nv.bin
+    device/huawei/s7/prebuilt/system/etc/nv.bin:system/etc/nv.bin \
+    device/huawei/s7/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+
 
 
 xPRODUCT_COPY_FILES += \
