@@ -271,10 +271,10 @@ PRODUCT_PACKAGES += \
     libmm-omxcore \
     libOmxCore \
     libstagefrighthw \
-    libOmxVdec \
-    libOmxVidEnc \
     libmm-omxcore \
     libtilerenderer
+#    libOmxVdec \
+#    libOmxVidEnc \
 
 
 # Camera
@@ -321,8 +321,8 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
     frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh \
-    vendor/goo/GooManager_2.1.2.apk:system/app/GooManager.apk
+    device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh
+#    vendor/goo/GooManager_2.1.2.apk:system/app/GooManager.apk
 
 
 
@@ -334,26 +334,17 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/init.qcom.coex.sh:system/etc/init.qcom.coex.sh \
     device/huawei/s7/prebuilt/system/bin/hci_qcomm_init:system/bin/hci_qcomm_init \
     device/huawei/s7/prebuilt/system/bin/hciattach:system/bin/hciattach \
-<<<<<<< HEAD
     device/huawei/s7/prebuilt/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
     system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
     device/huawei/s7/prebuilt/system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd:system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd
-=======
-    device/huawei/s7/prebuilt/system/bin/hciattach:system/bin/hciattach \
-    device/huawei/s7/prebuilt/system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd:system/etc/bluetooth/BCM4329B1_002.002.023.0313.0390.hcd \
-    device/huawei/s7/prebuilt/system/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf
-#    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
+ #   device/huawei/s7/prebuilt/system/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf
 
->>>>>>> 3238878... legacy omx
 
 
 ifneq ($(TARGET_PREBUILT_KERNEL),)
     PRODUCT_COPY_FILES += \
-    $(TARGET_PREBUILT_KERNEL):kernel
-endif
-
-PRODUCT_COPY_FILES += \
     device/huawei/s7/kernel:kernel
+endif
 
 
 PRODUCT_PROPERTY_OVERRIDES += \
