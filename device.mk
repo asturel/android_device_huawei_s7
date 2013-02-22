@@ -163,8 +163,8 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_COPY_FILES += \
-    device/huawei/s7/prebuilt/system/bin/akmd2:system/bin/akmd2 \
-    device/huawei/s7/prebuilt/system/lib/hw/sensors.default.so:system/lib/hw/sensors.default.so
+    device/huawei/s7/prebuilt/system/bin/akmd2:system/bin/akmd2
+#    device/huawei/s7/prebuilt/system/lib/hw/sensors.default.so:system/lib/hw/sensors.default.so
 
 
 # RIL
@@ -289,8 +289,8 @@ PRODUCT_PACKAGES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    lights.s7
-
+    lights.s7 \
+    sensors.s7
 
 
 # Live Wallpapers
