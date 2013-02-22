@@ -1,6 +1,9 @@
+$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libcamera_intermediates)
+$(shell touch $(OUT)/obj/SHARED_LIBRARIES/libcamera_intermediates/export_includes)
+
 LOCAL_PATH := $(call my-dir)
 
-
+ifeq (1,0)
 ## Make libcamera
 
 # When zero we link against libmmcamera; when 1, we dlopen libmmcamera.
@@ -35,6 +38,7 @@ endif
 LOCAL_MODULE:= libcamera
 include $(BUILD_SHARED_LIBRARY)
 
+endif
 
 ## Make camera wrapper
 
