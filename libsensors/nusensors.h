@@ -54,8 +54,8 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 #define AKM_DEVICE_NAME             "/dev/akm8973_aot"  // AKM8973 3-axis Electronic Compass
 
 
-#define EVENT_TYPE_ACCEL_X          ABS_Y
-#define EVENT_TYPE_ACCEL_Y          ABS_X
+#define EVENT_TYPE_ACCEL_X          ABS_X
+#define EVENT_TYPE_ACCEL_Y          ABS_Y
 #define EVENT_TYPE_ACCEL_Z          ABS_Z
 #define EVENT_TYPE_ACCEL_STATUS     ABS_WHEEL
 
@@ -83,7 +83,7 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 
 // conversion of acceleration data to SI units (m/s^2)
 #define CONVERT_A                   (GRAVITY_EARTH / LSG)
-#define CONVERT_A_X                 (CONVERT_A)
+#define CONVERT_A_X                 (-CONVERT_A)
 #define CONVERT_A_Y                 (-CONVERT_A)
 #define CONVERT_A_Z                 (-CONVERT_A)
 

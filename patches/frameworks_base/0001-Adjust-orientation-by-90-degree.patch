@@ -1,0 +1,26 @@
+From c308bed87dac98c92c7573cecddc272b259af938 Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Fri, 22 Feb 2013 17:40:27 -0700
+Subject: [PATCH] Adjust orientation by 90 degree
+
+Change-Id: I421136b95a03b329c0962e58952f57207b5108d8
+---
+ .../android/view/WindowOrientationListener.java    |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/java/android/view/WindowOrientationListener.java b/core/java/android/view/WindowOrientationListener.java
+index 4c34dd4..f5974bf 100755
+--- a/core/java/android/view/WindowOrientationListener.java
++++ b/core/java/android/view/WindowOrientationListener.java
+@@ -472,7 +472,7 @@ public abstract class WindowOrientationListener {
+                         // This is the angle between the x-y projection of the up vector onto
+                         // the +y-axis, increasing clockwise in a range of [0, 360] degrees.
+                         int orientationAngle = (int) Math.round(
+-                                -Math.atan2(-x, y) * RADIANS_TO_DEGREES);
++                                -Math.atan2(-x, y) * RADIANS_TO_DEGREES) -90;
+                         if (orientationAngle < 0) {
+                             // atan2 returns [-180, 180]; normalize to [0, 360]
+                             orientationAngle += 360;
+-- 
+1.7.9.5
+
