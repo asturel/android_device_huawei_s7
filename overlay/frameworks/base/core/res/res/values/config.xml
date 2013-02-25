@@ -116,6 +116,9 @@
     <bool name="config_sf_limitedAlpha">true</bool>
     <bool name="config_sf_slowBlur">false</bool>
 -->
-<bool name="config_wifiApStartInterface">true</bool>
+    <bool name="config_wifiApStartInterface">true</bool>
+
+    <integer name="config_backKillTimeout">3000</integer>
+
 
 </resources>
