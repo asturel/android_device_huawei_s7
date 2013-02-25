@@ -47,3 +47,6 @@ persist.sys.purgeable_assets=1
 # tablet ui things, smallestScreenWidthDp=721, forcetabletUI=1,2
 smallestScreenWidthDp=0
 forcetabletUI=0
+
+# Vold
+ro.vold.switchablepair=/storage/sdcard1,/storage/sdcard0
