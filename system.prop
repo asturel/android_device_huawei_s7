@@ -1,7 +1,7 @@
 # RIL
 rild.libpath=/system/lib/libril-qc-1.so
 rild.libargs=-d /dev/smd0
-ro.telephony.ril.v3=icccardstatus,datacall,signalstrength,facilitylock,singlepdp
+ro.telephony.ril.v3=icccardstatus,datacall,signalstrength,facilitylock
 ro.telephony.call_ring.multiple=false
 ro.telephony.call_ring.delay=3000
 
@@ -12,23 +12,16 @@ wifi.supplicant_scan_interval=60
 #wifi.softapconcurrent.interface=wlan0
 
 # Graphics
-com.qc.hardware=true
-ro.sf.lcd_density=160
-#ro.sf.hwrotation=180
-persist.sys.use_dithering=2
-ro.opengles.version=131072
 debug.sf.hw=1
-#debug.composition.type=gpu
 debug.composition.type=mdp
-#debug.composition.type=dyn
-debug.gr.numframebuffers=3
-hwui.disable_vsync=true
-video.accelerate.hw=1
-
-debug.qctwa.statusbar=1
-debug.qctwa.preservebuf=1
 com.qc.hardware=true
 ro.max.fling_velocity=4000
+persist.sys.use_dithering=2
+ro.opengles.version=131072
+debug.enabletr=false
+debug.hwui.render_dirty_regions=false
+debug.gr.numframebuffers=3
+ro.sf.lcd_density=160
 
 # Camcorder
 debug.camcorder.disablemeta=1
@@ -42,19 +35,14 @@ service.adb.enable=1
 ro.vold.umsdirtyratio=20
 
 # Dalviks
-dalvik.vm.dexopt-data-only=1
-dalvik.vm.execution-mode=int:jit
-dalvik.vm.verify_bytecode=false
 dalvik.vm.checkjni=0
-ro.kernel.android.checkjni=0
+dalvik.vm.dexopt-data-only=1
+dalvik.vm.dexopt-flags=v=a,o=v,m=y,u=y
+dalvik.vm.execution-mode=int:jit
 
-ro.secure=0
-
-# ZRAM
-
+# Memory
 ro.zram.default=0
-
-
+persist.sys.purgeable_assets=1
 
 # tablet ui things, smallestScreenWidthDp=721, forcetabletUI=1,2
 smallestScreenWidthDp=0
