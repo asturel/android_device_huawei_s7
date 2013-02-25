@@ -2,6 +2,7 @@ import init.s7.usb.rc
 
 on early-init
         export EXTERNAL_STORAGE /storage/sdcard0
+	export SECONDARY_STORAGE /storage/sdcard1
 #        mkdir /mnt/sdcard 0777 system system
 #        mkdir /mnt/sdcard2 0777 system system
 
@@ -38,7 +39,7 @@ on init
 on fs
     devwait /dev/block/mmcblk0p2
     exec /system/bin/e2fsck -p /dev/block/mmcblk0p2
-    mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev barrier=1 noauto_da_alloc data=journal
+    mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev noatime barrier=1 noauto_da_alloc data=journal
 
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
