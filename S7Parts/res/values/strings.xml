@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">HUAWEI S7 Settings</string>
+        <string name="toast_error">Error:</string>
+        <string name="back_button">Back</string>
+        <string name="success">Successfully changed. Please reboot.</string>
+        <string name="tabletui_title_head">Tablet UI</string>
+        <string name="tabletui_summary_head">Activate/Deactivate Tablet UI</string>
+        <string name="density_title_head">Screen density</string>
+        <string name="density_summary_head">Change screen density value (tablet=120, default=160)</string>
+        <string name="storage_title_head">Swap internal-external sd</string>
+        <string name="storage_summary_head">Swap internal-external sdcard</string>
+</resources>

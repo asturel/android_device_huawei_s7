@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+http://developer.android.com/images/training/firstapp/edittext_wrap.pnghttp://developer.android.com/images/training/firstapp/edittext_wrap.png	<CheckBoxPreference
+		android:key="tabletui"
+		android:title="@string/tabletui_title_head"
+		android:summary="@string/tabletui_summary_head"
+		android:defaultValue="true" 
+		/>
+
+	<EditTextPreference android:key="density" android:title="@string/density_title_head" android:summary="@string/density_summary_head" android:numeric="integer"/>
+	<CheckBoxPreference android:title="@string/storage_title_head" android:summary="@string/storage_summary_head" android:key="storage"/>
+</PreferenceScreen>
