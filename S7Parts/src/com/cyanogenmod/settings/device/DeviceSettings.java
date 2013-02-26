@@ -26,7 +26,7 @@ public class DeviceSettings extends PreferenceActivity implements OnPreferenceCh
         addPreferencesFromResource(R.xml.s7parts);
         
         mTabletUIPref = (CheckBoxPreference) getPreferenceScreen().findPreference("tabletui");
-        mTabletUIPref.setChecked((SystemProperties.getInt("forcetabletUI", 0) == 1));
+        mTabletUIPref.setChecked((SystemProperties.getInt("persist.sys.tabletui", 0) == 1));
         mTabletUIPref.setOnPreferenceChangeListener(this);
 
         
