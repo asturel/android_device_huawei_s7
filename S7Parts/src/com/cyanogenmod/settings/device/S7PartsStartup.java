@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 
-public class S7Receiver extends BroadcastReceiver {
+public class S7PartsStartup extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
