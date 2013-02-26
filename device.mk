@@ -16,22 +16,7 @@
 
 
 DEVICE_PACKAGE_OVERLAYS := device/huawei/s7/overlay
-
-
-# The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
-
-
-#include hardware/qcom/media/mm-core/Android.mk
-#include hardware/qcom/media/libstagefrighthw/Android.mk
-#include hardware/qcom/media/mm-video/Android.mk
-#include hardware/qcom/media/libI420colorconvert/Android.mk
-
-
-#$(call inherit-product-if-exists, vendor/gapps/gapps.mk)
-
-#PRODUCT_AAPT_CONFIG := large mdpi hdpi
-#PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_AAPT_CONFIG := large ldpi mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
@@ -40,60 +25,72 @@ PRODUCT_LOCALES += ldpi mdpi
 PRODUCT_CHARACTERISTICS = tablet
 
 
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.media.capture.maxres=5m \
-    ro.media.capture.flash=led \
-    ro.media.capture.flashIntensity=41 \
-    ro.media.capture.torchIntensity=25 \
-    ro.media.capture.classification=classH \
-    ro.media.capture.flip=horizontalandvertical \
-    ro.com.google.locationfeatures=1 \
-    ro.telephony.call_ring.multiple=false \
-    ro.telephony.call_ring.delay=3000 \
-    ro.url.safetylegal=http://www.huawei.com/staticfiles/Support/legal/?model=s7 \
-    ro.media.dec.jpeg.memcap=20000000 \
-    ro.media.dec.aud.wma.enabled=1 \
-    ro.media.dec.vid.wmv.enabled=1 \
-    dalvik.vm.lockprof.threshold=500 \
-    ro.kernel.android.checkjni=0 \
-    dalvik.vm.dexopt-data-only=1 \
-    ro.vold.umsdirtyratio=20
-
-#Common packages (gingerbread/ics)
-xPRODUCT_PACKAGES += \
-    librs_jni \
-    dspexec \
-    libbridge \
-    wlan_cu \
-    wlan_loader \
-    libCustomWifi \
-    wpa_supplicant.conf \
-    dhcpcd.conf \
-    libLCML \
-    libOMX_Core \
-    libfnc \
-    iwmulticall \
-    hostap \
-    hostapd.conf \
-    libhostapdcli \
-    static_busybox \
-    Superuser \
-    su
-
-# for jpeg hw encoder/decoder
-#PRODUCT_PACKAGES += libskiahw
+# Graphics
+PRODUCT_PACKAGES += \
+    libgenlock \
+    gralloc.qsd8k \
+    copybit.qsd8k \
+    hwcomposer.qsd8k
 
 
-#PRODUCT_PACKAGES += e2fsck
+# Audio
+PRODUCT_PACKAGES += \
+    audio.primary.s7 \
+    audio_policy.s7 \
+    audio.a2dp.default \
+    libaudioutils
 
-# Add DroidSSHd (dropbear) Management App - tpruvot/android_external_droidsshd @ github
-#PRODUCT_PACKAGES += DroidSSHd dropbear dropbearkey sftp-server scp ssh
 
-# Missing in CM9
-#PRODUCT_PACKAGES += AndroidTerm DSPManager
+# OMX
+PRODUCT_PACKAGES += \
+    libmm-omxcore \
+    libOmxCore \
+    libstagefrighthw \
+    libtilerenderer \
+    libOmxVdec \
+    libOmxVidEnc \
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxEvrcEnc \
+    libOmxQcelp13Enc
 
-# we have enough storage space to hold precise GC data
-PRODUCT_TAGS += dalvik.gc.type-precise
+
+# Camera
+PRODUCT_PACKAGES += \
+    camera.qsd8k \
+    LegacyCamera
+
+
+# GPS
+PRODUCT_PACKAGES += \
+    librpc \
+    gps.s7
+
+
+# Sensors, lights
+PRODUCT_PACKAGES += \
+    lights.s7 \
+    sensors.s7
+
+
+# S7 parts
+PRODUCT_PACKAGES += \
+    S7Parts
+
+
+# Live Wallpapers
+PRODUCT_PACKAGES += \
+    LiveWallpapersPicker \
+    librs_jni
+
+
+# Other
+PRODUCT_PACKAGES += \
+    make_ext4fs \
+    setup_fs \
+    dexpreopt \
+    wpa_supplicant.conf
+
 
 PRODUCT_COPY_FILES += \
     device/huawei/s7/vold.fstab:system/etc/vold.fstab
@@ -135,17 +132,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system//etc/wifi/wpa_supplicant.conf:system//etc/wifi/wpa_supplicant.conf \
     device/huawei/s7/prebuilt/system/etc/nv.bin:system/etc/nv.bin
 
-
-xPRODUCT_COPY_FILES += \
-    device/huawei/s7/prebuilt/system/wifi/dhd.ko:system/lib/modules/dhd.ko \
-    device/huawei/s7/prebuilt/system/wifi/firmware.bin:system/wifi/firmware.bin \
-    device/huawei/s7/prebuilt/system/wifi/firmware_apsta.bin:system/wifi/firmware_apsta.bin \
-    device/huawei/s7/prebuilt/system/wifi/firmware_test.bin:system/wifi/firmware_test.bin \
-    device/huawei/s7/prebuilt/system/wifi/nvram.txt:system/wifi/nvram.txt
-
-
-
-
+ 
 # Layout, Keychars, calibration
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/usr/idc/t1320.idc:system/usr/idc/t1320.idc \
@@ -154,18 +141,14 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/usr/keychars/s7_keypad.kcm.bin:system/usr/keychars/s7_keypad.kcm.bin \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/s7_handset.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_keypad.kl:system/usr/keylayout/s7_keypad.kl \
-    device/huawei/s7/prebuilt/system/usr/keylayout/Generic.kl:system/usr/keylayout/Generic.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/t1320.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/msm_touchscreen.kl \
     device/huawei/s7/prebuilt/system/usr/keylayout/s7_handset.kl:system/usr/keylayout/mxt224_touchscreen.kl
 
 
-
 # Sensors
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/bin/akmd2:system/bin/akmd2
-#    device/huawei/s7/prebuilt/system/lib/hw/sensors.default.so:system/lib/hw/sensors.default.so
-
 
 # RIL
 PRODUCT_COPY_FILES += \
@@ -199,6 +182,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libloc_ext.so:system/lib/libloc_ext.so \
     device/huawei/s7/prebuilt/system/lib/libloc_api.so:system/lib/libloc_api.so \
     device/huawei/s7/prebuilt/system/lib/libgps.so:system/lib/libgps.so
+
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libcommondefs.so:obj/lib/libcommondefs.so \
     device/huawei/s7/prebuilt/system/lib/libloc-rpc.so:obj/lib/libloc-rpc.so \
@@ -226,6 +210,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/liboemcamera.so:obj/lib/liboemcamera.so \
     device/huawei/s7/prebuilt/system/lib/libcamera-s7.so:obj/lib/libcamera.so
 
+
 #OMX
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libOmxCore.so:system/lib/libOmxCore.so \
@@ -233,80 +218,9 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libOmxVidEnc.so:system/lib/libOmxVidEnc.so
 
 
-# ntfs
-
+# NTFS
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/bin/ntfs-3g:system/bin/ntfs-3g
-#    device/huawei/s7/prebuilt/system/lib/modules/fuse.ko:system/lib/modules/fuse.ko \
-
-
-
-# Graphics
-
-PRODUCT_PACKAGES += \
-    libgenlock \
-    gralloc.qsd8k \
-    copybit.qsd8k \
-    hwcomposer.qsd8k
-
-
-# Audio
-PRODUCT_PACKAGES += \
-    audio.primary.s7 \
-    audio_policy.s7 \
-    audio.a2dp.default \
-    libaudioutils
-
-# OMX
-PRODUCT_PACKAGES += \
-    libmm-omxcore \
-    libOmxCore \
-    libstagefrighthw \
-    libtilerenderer \
-    libOmxVdec \
-    libOmxVidEnc \
-    libOmxAacEnc \
-    libOmxAmrEnc \
-    libOmxEvrcEnc \
-    libOmxQcelp13Enc
-
-
-# Camera
-PRODUCT_PACKAGES += \
-    camera.qsd8k \
-    LegacyCamera
-
-
-# GPS
-PRODUCT_PACKAGES += \
-    librpc \
-    gps.s7
-
-
-# Sensors
-PRODUCT_PACKAGES += \
-    lights.s7 \
-    sensors.s7
-
-
-# Live Wallpapers
-PRODUCT_PACKAGES += \
-        LiveWallpapersPicker \
-        librs_jni
-
-# Other
-PRODUCT_PACKAGES += \
-        make_ext4fs \
-        setup_fs \
-        dexpreopt \
-        wpa_supplicant.conf
-
-
-
-DISABLE_DEXPREOPT := false
-
-PRODUCT_TAGS += dalvik.gc.type-precise
-
 
 
 # These are the hardware-specific features
@@ -346,6 +260,8 @@ PRODUCT_COPY_FILES += \
 #    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
 
 
+DISABLE_DEXPREOPT := false
+
 
 ifneq ($(TARGET_PREBUILT_KERNEL),)
 PRODUCT_COPY_FILES += \
@@ -358,24 +274,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.goo.rom=CM10s7 \
     ro.goo.version=$(shell date +%s)
 
-#$(call inherit-product, vendor/qcom/proprietary/qcom-vendor.mk)
-
-
-#$(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
-
-#$(call inherit-product, external/wpa_supplicant_6/wpa_supplicant/wpa_supplicant_conf.mk)
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
-#$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
-
-#$(call inherit-product-if-exists,hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
-
-#$(call inherit-product,  frameworks/base/build/tablet-dalvik-heap.mk)
-#$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
-
-#$(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
-#$(call inherit-product-if-exists,hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
-
-
 
 ifneq ($(PA_VERSION_MAJOR),0)
     PRODUCT_PROPERTY_OVERRIDES += persist.sys.nobootanimation=0
