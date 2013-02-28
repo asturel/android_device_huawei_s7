@@ -156,7 +156,22 @@ service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant  -Dwext
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -BKL
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+service iprenew_bnep0 /system/bin/dhcpcd -n
     class main
     disabled
     oneshot
@@ -165,11 +180,6 @@ service start_usb0 /system/bin/logwrapper /system/bin/sh /etc/start_usb0.sh
     class main
     disabled
     oneshot
-
-service iprenew_wlan0 /system/bin/dhcpcd -n
-        class main
-        disabled
-        oneshot
 
 service akmd /system/bin/akmd2
     class main
