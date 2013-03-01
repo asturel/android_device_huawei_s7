@@ -1,23 +1,23 @@
-From 4e2ab8ce0307c9617837b1f7175e90812dafbc03 Mon Sep 17 00:00:00 2001
+From bfe103a6e8e185f6f66b0194a44cca7a119820d1 Mon Sep 17 00:00:00 2001
 From: asturel <astur3l@gmail.com>
-Date: Fri, 21 Sep 2012 19:35:37 +0200
-Subject: [PATCH 2/2] tabletui
+Date: Mon, 25 Feb 2013 17:07:49 -0700
+Subject: [PATCH] Add Tablet UI property: persist.sys.tabletui
 
-Change-Id: I940ddb986fb38652aec2bac3b83b95846c609da2
+Change-Id: Id9ba30e880e490c9fdebacc9d7367b5cb5969ee2
 ---
- .../src/com/android/internal/policy/impl/PhoneWindowManager.java |    4 ++++
- services/java/com/android/server/wm/WindowManagerService.java    |    6 ++++++
- 2 files changed, 10 insertions(+)
+ .../internal/policy/impl/PhoneWindowManager.java   |    4 ++++
+ .../android/server/wm/WindowManagerService.java    |    4 ++++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
-index 26dec41..b266570 100644
+index 26dec41..6fdc397 100644
 --- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
 +++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
 @@ -1345,6 +1345,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
              mNavigationBarCanMove = false;
          }
  
-+        String forcetabletUI = SystemProperties.get("forcetabletUI");
++        String forcetabletUI = SystemProperties.get("persist.sys.tabletui");
 +        if (forcetabletUI.equals("1")) mHasSystemNavBar = true;
 +        else if (forcetabletUI.equals("2")) { mHasSystemNavBar = true; mNavigationBarCanMove = true; }
 +
@@ -25,22 +25,20 @@ index 26dec41..b266570 100644
              mHasNavigationBar = mContext.getResources().getBoolean(
                      com.android.internal.R.bool.config_showNavigationBar);
 diff --git a/services/java/com/android/server/wm/WindowManagerService.java b/services/java/com/android/server/wm/WindowManagerService.java
-index 1dd0d08..fb1bf63 100755
+index 1dd0d08..2a9d94a 100755
 --- a/services/java/com/android/server/wm/WindowManagerService.java
 +++ b/services/java/com/android/server/wm/WindowManagerService.java
-@@ -6431,6 +6431,12 @@ public class WindowManagerService extends IWindowManager.Stub
+@@ -6431,6 +6431,10 @@ public class WindowManagerService extends IWindowManager.Stub
          sl = reduceConfigLayout(sl, Surface.ROTATION_180, density, unrotDw, unrotDh);
          sl = reduceConfigLayout(sl, Surface.ROTATION_270, density, unrotDh, unrotDw);
          outConfig.smallestScreenWidthDp = (int)(mSmallestDisplayWidth / density);
 +
-+        try {
-+            Integer smallestScreenWidthDOverride = Integer.parseInt(  SystemProperties.get("smallestScreenWidthDp") );
-+            if (smallestScreenWidthDOverride > 0) outConfig.smallestScreenWidthDp = smallestScreenWidthDOverride;
-+        } catch (Exception e) {};
++        String forcetabletUI = SystemProperties.get("persist.sys.tabletui");
++        if (forcetabletUI.equals("1") || forcetabletUI.equals("2")) outConfig.smallestScreenWidthDp = 721;
 +
          outConfig.screenLayout = sl;
      }
  
 -- 
-1.7.10.4
+1.7.9.5
 
