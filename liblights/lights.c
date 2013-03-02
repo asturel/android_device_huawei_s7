@@ -78,11 +78,12 @@ void init_globals(void)
     ALOGI("lights started\n");
     // init the mutex
     pthread_mutex_init(&g_lock, NULL);
-
+/*
     LED_BLUE_FD = open(LED_BLUE_DEVICE, 0);
     if (LED_BLUE_FD < 0) {
         ALOGE("Can't open device file: %s\n", LED_BLUE_DEVICE);
     }	
+*/
 }
 
 static int
@@ -152,6 +153,7 @@ static int
 set_speaker_light_locked(struct light_device_t* dev,
         struct light_state_t const* state)
 {
+    LED_BLUE_FD = open(LED_BLUE_DEVICE, 0);
     if (LED_BLUE_FD < 0) return 0;
     int onMS, offMS;
 
@@ -173,6 +175,7 @@ set_speaker_light_locked(struct light_device_t* dev,
     } else { 
         ioctl(LED_BLUE_FD, BSP_LED_E_OFF);
     }
+    close(LED_BLUE_FD);
     return 0;
 }
 
