@@ -181,7 +181,7 @@ BOARD_WLAN_DEVICE           := bcm4319
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/dhd.ko"
 WIFI_DRIVER_FW_PATH_STA     := "/system/etc/wifi/rtecdc-bcm4319.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/system/etc/wifi/rtecdc-apsta-bcm4319.bin"
-WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4319.bin nvram_path=/system/etc/wifi/nvram-bcm4319.txt"
+WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/rtecdc-bcm4319.bin nvram_path=/system/etc/wifi/nvram-bcm4319.txt firmware_softap_path=/system/etc/wifi/rtecdc-apsta-bcm4319.bin"
 WIFI_DRIVER_MODULE_NAME     := "dhd"
 
 # fix work on old kernel
