@@ -39,7 +39,7 @@ on init
 on fs
     devwait /dev/block/mmcblk0p2
     exec /system/bin/e2fsck -p /dev/block/mmcblk0p2
-    mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev noatime barrier=1 noauto_da_alloc data=journal
+    mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev noatime nodiratime barrier=0 noauto_da_alloc data=writeback nobh
 
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
