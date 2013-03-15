@@ -115,7 +115,8 @@ BOARD_SDEXT_DEVICE := /dev/block/mmcblk0p2
 
 # Recovery
 TARGET_BOOTLOADER_BOARD_NAME := s7
-TARGET_OTA_ASSERT_DEVICE := s7
+TARGET_OTA_ASSERT_DEVICE := s7,qsd8k_slim
+
 #BOARD_RECOVERY_HANDLES_MOUNT := true
 BOARD_LDPI_RECOVERY := true
 BOARD_CUSTOM_RECOVERY_KEYMAPPING:= ../../device/huawei/s7/recovery/recovery_ui.c
