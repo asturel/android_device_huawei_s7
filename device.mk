@@ -55,10 +55,10 @@ PRODUCT_PACKAGES += \
     libOmxQcelp13Enc
 
 
-# Camera
-PRODUCT_PACKAGES += \
-    camera.qsd8k \
-    LegacyCamera
+# Camera ## NOT WORKING!
+#PRODUCT_PACKAGES += \
+#    camera.qsd8k \
+#    LegacyCamera
 
 
 # GPS
