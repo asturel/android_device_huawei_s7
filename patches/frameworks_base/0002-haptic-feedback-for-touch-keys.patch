@@ -1,0 +1,26 @@
+From e39d03ed1dd23e50d40849647f16a25660a20d15 Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Fri, 15 Mar 2013 12:18:37 -0700
+Subject: [PATCH 2/2] haptic feedback for touch keys
+
+Change-Id: I80c149e32f2af037f160eed31af15774968440b5
+---
+ .../internal/policy/impl/PhoneWindowManager.java   |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+index 6fdc397..f6fc7ae 100644
+--- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
++++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+@@ -2121,6 +2121,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                     + repeatCount + " keyguardOn=" + keyguardOn + " canceled=" + canceled);
+         }
+ 
++        if (down && !canceled && !longPress && repeatCount == 0) performHapticFeedbackLw(null, HapticFeedbackConstants.VIRTUAL_KEY, false);
++
+         // If we think we might have a volume down & power/volume-up key chord on the way
+         // but we're not sure, then tell the dispatcher to wait a little while and
+         // try again later before dispatching.
+-- 
+1.7.9.5
+

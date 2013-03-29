@@ -1,0 +1,36 @@
+From 898154ed620c0f833186076ce10de6fa833d8f24 Mon Sep 17 00:00:00 2001
+From: asturel <astur3l@gmail.com>
+Date: Fri, 29 Mar 2013 13:25:34 -0700
+Subject: [PATCH] fix extendextractor on legacy omx
+
+Change-Id: I47800e417ea8828e2f2d85c3af3afb689b9d6697
+---
+ media/libstagefright/DataSource.cpp |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/media/libstagefright/DataSource.cpp b/media/libstagefright/DataSource.cpp
+index 8e61719..2adebdb 100644
+--- a/media/libstagefright/DataSource.cpp
++++ b/media/libstagefright/DataSource.cpp
+@@ -95,7 +95,7 @@ bool DataSource::sniff(
+     for (List<SnifferFunc>::iterator it = gSniffers.begin();
+          it != gSniffers.end(); ++it) {
+ 
+-#ifdef QCOM_HARDWARE
++#ifdef QCOM_HARDWARE && !defined(QCOM_LEGACY_OMX)
+         //Dont call the first sniffer from extended extarctor
+         if(it == extendedSnifferPosition)
+             continue;
+@@ -177,7 +177,9 @@ void DataSource::RegisterDefaultSniffers() {
+     RegisterSniffer(SniffMP3);
+     RegisterSniffer(SniffAAC);
+     RegisterSniffer(SniffMPEG2PS);
++#ifndef QCOM_LEGACY_OMX
+     RegisterSniffer(SniffWVM);
++#endif
+ #ifdef QCOM_HARDWARE
+     ExtendedExtractor::RegisterSniffers();
+ #endif
+-- 
+1.7.9.5
+

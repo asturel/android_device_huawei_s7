@@ -1,7 +1,7 @@
-From bfe103a6e8e185f6f66b0194a44cca7a119820d1 Mon Sep 17 00:00:00 2001
+From f520a0870c02cf43021bc4b07735ba7749791e99 Mon Sep 17 00:00:00 2001
 From: asturel <astur3l@gmail.com>
 Date: Mon, 25 Feb 2013 17:07:49 -0700
-Subject: [PATCH] Add Tablet UI property: persist.sys.tabletui
+Subject: [PATCH 1/2] Add Tablet UI property: persist.sys.tabletui
 
 Change-Id: Id9ba30e880e490c9fdebacc9d7367b5cb5969ee2
 ---

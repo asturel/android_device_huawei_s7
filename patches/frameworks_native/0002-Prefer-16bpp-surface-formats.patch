@@ -1,0 +1,65 @@
+From 4407c5b09d12b5efa0df350e1f3d191356b75938 Mon Sep 17 00:00:00 2001
+From: Grigori Goronzy <greg@blackbox>
+Date: Mon, 28 Jan 2013 08:05:39 +0100
+Subject: [PATCH] Prefer 16bpp surface formats
+
+Adds a property to use RGB565 surface formats for the opaque
+surface default, enabled by default.
+
+Change-Id: Iac9bbc8292a863e2ab86093df3ecf218e4ec61e1
+---
+ services/surfaceflinger/SurfaceFlinger.cpp |   11 +++++++++--
+ services/surfaceflinger/SurfaceFlinger.h   |    1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/services/surfaceflinger/SurfaceFlinger.cpp b/services/surfaceflinger/SurfaceFlinger.cpp
+index 3ca2297..a1cc2cb 100644
+--- a/services/surfaceflinger/SurfaceFlinger.cpp
++++ b/services/surfaceflinger/SurfaceFlinger.cpp
+@@ -104,7 +104,8 @@ SurfaceFlinger::SurfaceFlinger()
+         mLastTransactionTime(0),
+         mBootFinished(false),
+         mSecureFrameBuffer(0),
+-        mUseDithering(0)
++        mUseDithering(0),
++        mPrefer16bpp(0)
+ {
+     init();
+ #ifdef BOARD_USES_SAMSUNG_HDMI
+@@ -148,6 +149,9 @@ void SurfaceFlinger::init()
+     property_get("persist.sys.use_dithering", value, "1");
+     mUseDithering = atoi(value);
+ 
++    property_get("persist.sys.prefer_16bpp", value, "1");
++    mPrefer16bpp = atoi(value);
++
+     ALOGI_IF(mDebugRegion,       "showupdates enabled");
+     ALOGI_IF(mDebugDDMS,         "DDMS debugging enabled");
+     ALOGI_IF(mUseDithering,      "use dithering");
+@@ -1342,7 +1346,10 @@ sp<Layer> SurfaceFlinger::createNormalSurface(
+ #ifdef NO_RGBX_8888
+         format = PIXEL_FORMAT_RGB_565;
+ #else
+-        format = PIXEL_FORMAT_RGBX_8888;
++        if (mPrefer16bpp)
++            format = PIXEL_FORMAT_RGB_565;
++        else
++            format = PIXEL_FORMAT_RGBX_8888;
+ #endif
+         break;
+     }
+diff --git a/services/surfaceflinger/SurfaceFlinger.h b/services/surfaceflinger/SurfaceFlinger.h
+index 0492aa3..c225aab 100644
+--- a/services/surfaceflinger/SurfaceFlinger.h
++++ b/services/surfaceflinger/SurfaceFlinger.h
+@@ -436,6 +436,7 @@ private:
+    // only written in the main thread, only read in other threads
+    volatile     int32_t                     mSecureFrameBuffer;
+                 int                         mUseDithering;
++                bool                        mPrefer16bpp;
+ #if defined(BOARD_USES_SAMSUNG_HDMI) && defined(SAMSUNG_EXYNOS5250)
+     SecHdmiClient *                         mHdmiClient;
+ #endif
+-- 
+1.7.9.5
+
