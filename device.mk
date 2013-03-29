@@ -215,7 +215,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/lib/libOmxCore.so:system/lib/libOmxCore.so \
     device/huawei/s7/prebuilt/system/lib/libOmxVdec.so:system/lib/libOmxVdec.so \
-    device/huawei/s7/prebuilt/system/lib/libOmxVidEnc.so:system/lib/libOmxVidEnc.so
+    device/huawei/s7/prebuilt/system/lib/libOmxVidEnc.so:system/lib/libOmxVidEnc.so \
+    device/huawei/s7/prebuilt/system/lib/libDivxDrm.so:system/lib/libDivxDrm.so \
+    device/huawei/s7/prebuilt/system/lib/libmmosal.so:system/lib/libmmosal.so \
+    device/huawei/s7/prebuilt/system/lib/libmmparser.so:system/lib/libmmparser.so \
+    device/huawei/s7/prebuilt/system/lib/libmmparser_divxdrmlib.so:system/lib/libmmparser_divxdrmlib.so
 
 
 # NTFS
