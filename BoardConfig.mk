@@ -176,9 +176,9 @@ TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
-#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
-WPA_SUPPLICANT_VERSION      := VER_0_6_X
-BOARD_WLAN_DEVICE           := bcm4319
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
+WPA_SUPPLICANT_VERSION      := VER_0_8_X
+BOARD_WLAN_DEVICE           := bcm4329
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/dhd.ko"
 WIFI_DRIVER_FW_PATH_STA     := "/system/etc/wifi/rtecdc-bcm4319.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/system/etc/wifi/rtecdc-apsta-bcm4319.bin"
