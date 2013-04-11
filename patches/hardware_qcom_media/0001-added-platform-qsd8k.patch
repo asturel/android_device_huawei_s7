@@ -1,14 +1,15 @@
-From 5ab196f3497085557580c8b720f69a5b03bc66ab Mon Sep 17 00:00:00 2001
+From 1eb3dbc6dadcd34e596f998397a018adc73402a0 Mon Sep 17 00:00:00 2001
 From: asturel <astur3l@gmail.com>
 Date: Fri, 21 Sep 2012 12:22:09 +0200
 Subject: [PATCH] added platform qsd8k
 
-Change-Id: I47857e9f09ef3465bbfe290031545f78d4c18ed2
+Change-Id: Ie9c2d77b1994543d5b40d27f272e0307be1421de
 ---
  Android.mk                                   |    2 +-
+ mm-core/Android.mk                           |    3 +
  mm-core/src/8250/qc_registry_table.c         |  416 ++++++++++++++++++++++++++
  mm-core/src/8250/qc_registry_table_android.c |  320 ++++++++++++++++++++
- 3 files changed, 737 insertions(+), 1 deletion(-)
+ 4 files changed, 740 insertions(+), 1 deletion(-)
  create mode 100644 mm-core/src/8250/qc_registry_table.c
  create mode 100644 mm-core/src/8250/qc_registry_table_android.c
 
@@ -22,6 +23,20 @@ index 08f1472..aa884bd 100755
 +ifneq ($(filter msm8974 msm8960 msm8660 msm7x27a msm7x30 qsd8k,$(TARGET_BOARD_PLATFORM)),)
  include $(QCOM_MEDIA_ROOT)/mm-core/Android.mk
  include $(QCOM_MEDIA_ROOT)/libstagefrighthw/Android.mk
+ endif
+diff --git a/mm-core/Android.mk b/mm-core/Android.mk
+index e8b8698..f934e48 100644
+--- a/mm-core/Android.mk
++++ b/mm-core/Android.mk
+@@ -24,6 +24,9 @@ else ifeq ($(TARGET_BOARD_PLATFORM),msm8960)
+ MM_CORE_TARGET = 8960
+ else ifeq ($(TARGET_BOARD_PLATFORM),msm8974)
+ MM_CORE_TARGET = 8974
++else ifeq ($(TARGET_BOARD_PLATFORM),qsd8k)
++MM_CORE_TARGET = 8250
++
+ else
+ MM_CORE_TARGET = default
  endif
 diff --git a/mm-core/src/8250/qc_registry_table.c b/mm-core/src/8250/qc_registry_table.c
 new file mode 100644
@@ -772,5 +787,5 @@ index 0000000..932289f
 +
 +
 -- 
-1.7.10.4
+1.7.9.5
 
