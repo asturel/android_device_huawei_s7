@@ -89,19 +89,19 @@
         <item>0</item>
         <item>0</item>
     </integer-array>
-
+<!--
     <string name="config_networkLocationProviderPackageName" translatable="false">com.google.android.location</string>
 
     <string name="config_geocodeProviderPackageName" translatable="false">com.google.android.location</string>
-
-    <bool name="config_bluetooth_adapter_quick_switch">false</bool>
+-->
+<!--    <bool name="config_bluetooth_adapter_quick_switch">false</bool> -->
 
     <string name="config_legacyUmsLunFile">/sys/devices/platform/msm_hsusb/gadget/lun0/file</string>
-
+<!--
     <integer name="config_screenOnAnimation">250</integer>
 
     <bool name="config_screenOffAnimation">true</bool>
-
+-->
     <integer name="config_deviceHardwareKeys">7</integer>
 
     <bool name="config_allowAllRotations">true</bool>
