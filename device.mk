@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+QCOM_BOARD_PLATFORMS += qsd8k
 
 DEVICE_PACKAGE_OVERLAYS := device/huawei/s7/overlay
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
@@ -43,16 +43,16 @@ PRODUCT_PACKAGES += \
 
 # OMX
 PRODUCT_PACKAGES += \
-    libmm-omxcore \
-    libOmxCore \
+    xlibmm-omxcore \
+    xlibOmxCore \
     libstagefrighthw \
-    libtilerenderer \
-    libOmxVdec \
-    libOmxVidEnc \
-    libOmxAacEnc \
-    libOmxAmrEnc \
-    libOmxEvrcEnc \
-    libOmxQcelp13Enc
+    libtilerenderer
+#    libOmxVdec \
+#    libOmxVidEnc \
+#    libOmxAacEnc \
+#    libOmxAmrEnc \
+#    libOmxEvrcEnc \
+#    libOmxQcelp13Enc
 
 
 # Camera ## NOT WORKING!
@@ -245,7 +245,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     device/huawei/s7/prebuilt/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
-    device/huawei/s7/prebuilt/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    device/huawei/s7/prebuilt/system/etc/media_profiles.xml:system/etc/media_profiles.xml.bak \
     device/huawei/s7/prebuilt/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
     device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh \
     vendor/goo/GooManager_2.1.2.apk:system/app/GooManager.apk
@@ -275,7 +275,7 @@ endif
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.goo.developerid=asturel \
     ro.goo.board=$(TARGET_PRODUCT) \
-    ro.goo.rom=CM10s7 \
+    ro.goo.rom=CM101s7 \
     ro.goo.version=$(shell date +%s)
 
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)

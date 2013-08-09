@@ -22,6 +22,8 @@ debug.enabletr=false
 debug.hwui.render_dirty_regions=false
 debug.gr.numframebuffers=3
 ro.sf.lcd_density=160
+ro.opengles.surface.rgb565=true
+
 
 # Camcorder
 debug.camcorder.disablemeta=1
