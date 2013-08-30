@@ -1,0 +1,3 @@
+#!/system/bin/sh
+
+ioctl /dev/incident_led 1

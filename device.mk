@@ -248,6 +248,7 @@ PRODUCT_COPY_FILES += \
     device/huawei/s7/prebuilt/system/etc/media_profiles.xml:system/etc/media_profiles.xml.bak \
     device/huawei/s7/prebuilt/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
     device/huawei/s7/prebuilt/system/etc/start_usb0.sh:system/etc/start_usb0.sh \
+    device/huawei/s7/prebuilt/system/etc/init.d/099ledoff:system/etc/init.d/099ledoff \
     vendor/goo/GooManager_2.1.2.apk:system/app/GooManager.apk
 
 # Bluetooth configuration files
