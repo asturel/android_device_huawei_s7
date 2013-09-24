@@ -45,8 +45,11 @@ logi ()
 failed ()
 {
   loge "$1: exit code $2"
+  setprop bluetooth.status off
   exit $2
 }
+
+setprop bluetooth.status off
 
 start_hciattach ()
 {
@@ -99,6 +102,8 @@ trap "kill_hciattach" TERM INT
 start_hciattach
 
 wait $hciattach_pid
+
+setprop bluetooth.status on
 
 logi "Bluetooth stopped"
 

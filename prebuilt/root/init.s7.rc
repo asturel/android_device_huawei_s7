@@ -210,6 +210,11 @@ service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
     disabled
     oneshot
 
+on property:bluetooth.hciattach=true
+    start hciattach
+
+on property:bluetooth.hciattach=false
+    setprop bluetooth.status off
 
 #service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
 #    user system
